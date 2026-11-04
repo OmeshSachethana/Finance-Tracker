@@ -68,3 +68,14 @@ describe('PATCH /api/categories/:id', () => {
     expect(res.status).toBe(404);
   });
 });
+
+describe('DELETE /api/categories/:id', () => {
+  it('deletes an unused category', async () => {
+    const { Authorization } = await authHeader(app);
+    const list = await request(app).get('/api/categories').set({ Authorization });
+    const id = list.body.items[0].id;
+    await request(app).delete(`/api/categories/${id}`).set({ Authorization }).expect(204);
+    const after = await request(app).get('/api/categories').set({ Authorization });
+    expect(after.body.items).toHaveLength(list.body.items.length - 1);
+  });
+});
