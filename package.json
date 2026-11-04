@@ -21,6 +21,7 @@
   "scripts": {
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "dev": "npm run dev -w frontend"
   }
 }
