@@ -23,6 +23,7 @@
     "format:check": "prettier --check .",
     "prepare": "husky",
     "dev": "npm run dev -w frontend",
-    "build": "npm run build --workspaces"
+    "build": "npm run build --workspaces",
+    "lint": "npm run lint --workspaces"
   }
 }
