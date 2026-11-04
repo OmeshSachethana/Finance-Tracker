@@ -2,6 +2,7 @@ import request from 'supertest';
 import { createApp } from '../../app.ts';
 import { authHeader } from '../../test/auth.ts';
 import { resetDatabase } from '../../test/db.ts';
+import { userWithDefaults } from '../../test/fixtures.ts';
 
 const app = createApp();
 
@@ -54,5 +55,28 @@ describe('PATCH /api/accounts/:id', () => {
       .set({ Authorization: other.Authorization })
       .send({ name: 'Mine now' });
     expect(res.status).toBe(404);
+  });
+});
+
+describe('account balances', () => {
+  it('reflects income and expenses', async () => {
+    const { headers, accountId, groceriesId, salaryId } = await userWithDefaults(app);
+    const base = { date: '2026-10-01', accountId };
+    await request(app)
+      .post('/api/transactions')
+      .set(headers)
+      .send({ ...base, type: 'income', amount: 10000, description: 'Pay', categoryId: salaryId });
+    await request(app)
+      .post('/api/transactions')
+      .set(headers)
+      .send({
+        ...base,
+        type: 'expense',
+        amount: 2500,
+        description: 'Food',
+        categoryId: groceriesId,
+      });
+    const res = await request(app).get('/api/accounts').set(headers);
+    expect(res.body.items[0].balance).toBe(7500);
   });
 });
