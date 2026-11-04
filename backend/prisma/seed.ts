@@ -1,6 +1,7 @@
 import { DEFAULT_CATEGORIES } from '@finance-tracker/shared';
 import { hashPassword } from '../src/lib/password.ts';
 import { prisma } from '../src/lib/prisma.ts';
+import { generateSampleTransactions } from './seed-data.ts';
 
 const DEMO_EMAIL = 'demo@example.com';
 const ADMIN_EMAIL = 'admin@example.com';
@@ -29,9 +30,32 @@ async function upsertUser(email: string, name: string, role: 'USER' | 'ADMIN') {
   });
 }
 
+async function seedDemoData(userId: string) {
+  if ((await prisma.transaction.count({ where: { userId } })) > 0) return;
+
+  const [account, categories] = await Promise.all([
+    prisma.account.findFirstOrThrow({ where: { userId } }),
+    prisma.category.findMany({ where: { userId } }),
+  ]);
+  const categoryId = (name: string) => categories.find((c) => c.name === name)!.id;
+
+  await prisma.transaction.createMany({
+    data: generateSampleTransactions().map((t) => ({
+      userId,
+      accountId: account.id,
+      categoryId: categoryId(t.category),
+      type: t.type,
+      amount: t.amount,
+      description: t.description,
+      date: new Date(),
+    })),
+  });
+}
+
 async function main() {
   await upsertUser(ADMIN_EMAIL, 'Admin', 'ADMIN');
-  await upsertUser(DEMO_EMAIL, 'Demo User', 'USER');
+  const demo = await upsertUser(DEMO_EMAIL, 'Demo User', 'USER');
+  await seedDemoData(demo.id);
   console.log(`Seeded ${ADMIN_EMAIL} and ${DEMO_EMAIL} (password: ${PASSWORD})`);
 }
 
