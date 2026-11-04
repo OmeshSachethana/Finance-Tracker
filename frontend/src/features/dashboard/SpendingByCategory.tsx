@@ -9,9 +9,18 @@ import { foldCategories } from './foldCategories';
 
 interface SpendingByCategoryProps {
   items: CategoryBreakdownItem[] | undefined;
+  title?: string;
+  emptyTitle?: string;
+  /** CSS colour for the bars; expense bars by default. */
+  barColor?: string;
 }
 
-export function SpendingByCategory({ items }: SpendingByCategoryProps) {
+export function SpendingByCategory({
+  items,
+  title = 'Spending by category',
+  emptyTitle = 'No spending this month',
+  barColor = 'var(--chart-expense)',
+}: SpendingByCategoryProps) {
   const { format } = useMoney();
   const { data: categories = [] } = useCategories();
   const names = new Map(categories.map((c) => [c.id, { name: c.name, color: c.color }]));
@@ -23,7 +32,7 @@ export function SpendingByCategory({ items }: SpendingByCategoryProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Spending by category</CardTitle>
+        <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
         {!items ? (
@@ -33,7 +42,7 @@ export function SpendingByCategory({ items }: SpendingByCategoryProps) {
             ))}
           </div>
         ) : rows.length === 0 ? (
-          <EmptyState icon={PieChart} title="No spending this month" />
+          <EmptyState icon={PieChart} title={emptyTitle} />
         ) : (
           <ul className="space-y-4">
             {rows.map((row) => (
@@ -59,7 +68,7 @@ export function SpendingByCategory({ items }: SpendingByCategoryProps) {
                     className="h-full rounded-full"
                     style={{
                       width: `${(row.total / max) * 100}%`,
-                      backgroundColor: 'var(--chart-expense)',
+                      backgroundColor: barColor,
                     }}
                   />
                 </div>
