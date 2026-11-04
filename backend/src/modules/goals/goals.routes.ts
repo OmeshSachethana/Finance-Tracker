@@ -1,9 +1,19 @@
-import { createGoalSchema, updateGoalSchema } from '@finance-tracker/shared';
+import {
+  createGoalSchema,
+  goalContributionSchema,
+  updateGoalSchema,
+} from '@finance-tracker/shared';
 import { Router } from 'express';
 import { authenticate } from '../../middleware/authenticate.ts';
 import { validateBody } from '../../middleware/validate.ts';
 import { toGoalDto } from './goals.serializer.ts';
-import { createGoal, deleteGoal, listGoals, updateGoal } from './goals.service.ts';
+import {
+  contributeToGoal,
+  createGoal,
+  deleteGoal,
+  listGoals,
+  updateGoal,
+} from './goals.service.ts';
 
 export const goalsRouter = Router();
 
@@ -26,4 +36,9 @@ goalsRouter.patch('/:id', validateBody(updateGoalSchema), async (req, res) => {
 goalsRouter.delete('/:id', async (req, res) => {
   await deleteGoal(req.user!.sub, req.params.id as string);
   res.status(204).end();
+});
+
+goalsRouter.post('/:id/contributions', validateBody(goalContributionSchema), async (req, res) => {
+  const goal = await contributeToGoal(req.user!.sub, req.params.id as string, req.body.amount);
+  res.json(toGoalDto(goal));
 });

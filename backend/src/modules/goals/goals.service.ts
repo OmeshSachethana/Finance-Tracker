@@ -1,5 +1,5 @@
 import type { CreateGoalInput, UpdateGoalInput } from '@finance-tracker/shared';
-import { notFound } from '../../lib/errors.ts';
+import { badRequest, notFound } from '../../lib/errors.ts';
 import { toDbDate } from '../../lib/mappers.ts';
 import { prisma } from '../../lib/prisma.ts';
 
@@ -30,4 +30,11 @@ export async function updateGoal(userId: string, id: string, input: UpdateGoalIn
 export async function deleteGoal(userId: string, id: string) {
   await getGoal(userId, id);
   await prisma.goal.delete({ where: { id } });
+}
+
+/** Adds (or withdraws, if negative) money from a goal without going below zero. */
+export async function contributeToGoal(userId: string, id: string, amount: number) {
+  const goal = await getGoal(userId, id);
+  if (goal.savedAmount + amount < 0) throw badRequest('Cannot withdraw more than is saved');
+  return prisma.goal.update({ where: { id }, data: { savedAmount: { increment: amount } } });
 }

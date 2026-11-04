@@ -36,4 +36,26 @@ describe('goals', () => {
     expect(updated.body.name).toBe('Rainy day fund');
     await request(app).delete(`/api/goals/${created.body.id}`).set({ Authorization }).expect(204);
   });
+
+  it('tracks contributions and completion', async () => {
+    const { Authorization } = await authHeader(app);
+    const created = await request(app)
+      .post('/api/goals')
+      .set({ Authorization })
+      .send({ ...goal, targetAmount: 1000 });
+    const url = `/api/goals/${created.body.id}/contributions`;
+    await request(app).post(url).set({ Authorization }).send({ amount: 600 });
+    const res = await request(app).post(url).set({ Authorization }).send({ amount: 400 });
+    expect(res.body).toMatchObject({ savedAmount: 1000, percent: 100, completed: true });
+  });
+
+  it('does not allow withdrawing more than saved', async () => {
+    const { Authorization } = await authHeader(app);
+    const created = await request(app).post('/api/goals').set({ Authorization }).send(goal);
+    const res = await request(app)
+      .post(`/api/goals/${created.body.id}/contributions`)
+      .set({ Authorization })
+      .send({ amount: -100 });
+    expect(res.status).toBe(400);
+  });
 });
