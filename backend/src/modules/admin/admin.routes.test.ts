@@ -34,3 +34,24 @@ describe('GET /api/admin/users', () => {
     expect(res.body.items.every((u: { email: string }) => u.email.includes('user1'))).toBe(true);
   });
 });
+
+describe('PATCH /api/admin/users/:id/role', () => {
+  it('promotes a user to admin', async () => {
+    const { userId } = await authHeader(app);
+    const admin = await adminHeader(app);
+    const res = await request(app)
+      .patch(`/api/admin/users/${userId}/role`)
+      .set(admin)
+      .send({ role: 'admin' });
+    expect(res.body.user.role).toBe('admin');
+  });
+
+  it('prevents admins from demoting themselves', async () => {
+    const admin = await adminHeader(app);
+    const res = await request(app)
+      .patch(`/api/admin/users/${admin.userId}/role`)
+      .set({ Authorization: admin.Authorization })
+      .send({ role: 'user' });
+    expect(res.status).toBe(400);
+  });
+});

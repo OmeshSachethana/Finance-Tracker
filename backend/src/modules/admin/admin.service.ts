@@ -1,5 +1,6 @@
 import type { Pagination } from '@finance-tracker/shared';
 import type { Prisma } from '../../generated/prisma/client.ts';
+import { badRequest, notFound } from '../../lib/errors.ts';
 import { prisma } from '../../lib/prisma.ts';
 
 /** Platform-wide counts for the admin dashboard. */
@@ -35,4 +36,11 @@ export async function listUsers({ page, pageSize, search }: Pagination & { searc
     prisma.user.count({ where }),
   ]);
   return { users, total, page, pageSize, totalPages: Math.max(1, Math.ceil(total / pageSize)) };
+}
+
+export async function setUserRole(actorId: string, userId: string, role: 'USER' | 'ADMIN') {
+  if (actorId === userId) throw badRequest('You cannot change your own role');
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+  if (!user) throw notFound('User not found');
+  return prisma.user.update({ where: { id: userId }, data: { role } });
 }
