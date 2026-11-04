@@ -5,3 +5,9 @@ export function toMinorUnits(amount: number, currency: CurrencyCode): number {
   const factor = 10 ** CURRENCY_DECIMALS[currency];
   return Math.round(amount * factor);
 }
+
+/** Converts integer minor units (e.g. 1234) back to a decimal amount (e.g. 12.34). */
+export function fromMinorUnits(minor: number, currency: CurrencyCode): number {
+  const factor = 10 ** CURRENCY_DECIMALS[currency];
+  return minor / factor;
+}
