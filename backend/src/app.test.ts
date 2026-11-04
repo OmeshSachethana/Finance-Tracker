@@ -23,4 +23,12 @@ describe('body parsing', () => {
       .send('{"broken":');
     expect(res.status).toBe(400);
   });
+
+  it('rejects oversized bodies with a 413', async () => {
+    const res = await request(createApp())
+      .post('/api/health')
+      .send({ data: 'x'.repeat(200_000) });
+    expect(res.status).toBe(413);
+    expect(res.body.error.code).toBe('PAYLOAD_TOO_LARGE');
+  });
 });
