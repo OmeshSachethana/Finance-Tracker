@@ -44,3 +44,9 @@ export async function setUserRole(actorId: string, userId: string, role: 'USER' 
   if (!user) throw notFound('User not found');
   return prisma.user.update({ where: { id: userId }, data: { role } });
 }
+
+export async function deleteUser(actorId: string, userId: string) {
+  if (actorId === userId) throw badRequest('You cannot delete your own account here');
+  const { count } = await prisma.user.deleteMany({ where: { id: userId } });
+  if (count === 0) throw notFound('User not found');
+}

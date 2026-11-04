@@ -5,7 +5,7 @@ import { authenticate } from '../../middleware/authenticate.ts';
 import { requireRole } from '../../middleware/requireRole.ts';
 import { validateBody, validateQuery } from '../../middleware/validate.ts';
 import { toUserDto } from '../auth/auth.serializer.ts';
-import { getPlatformStats, listUsers, setUserRole } from './admin.service.ts';
+import { deleteUser, getPlatformStats, listUsers, setUserRole } from './admin.service.ts';
 
 export const adminRouter = Router();
 
@@ -35,4 +35,9 @@ adminRouter.patch('/users/:id/role', validateBody(roleSchema), async (req, res) 
   const role = req.body.role === 'admin' ? 'ADMIN' : 'USER';
   const user = await setUserRole(req.user!.sub, req.params.id as string, role);
   res.json({ user: toUserDto(user) });
+});
+
+adminRouter.delete('/users/:id', async (req, res) => {
+  await deleteUser(req.user!.sub, req.params.id as string);
+  res.status(204).end();
 });

@@ -55,3 +55,13 @@ describe('PATCH /api/admin/users/:id/role', () => {
     expect(res.status).toBe(400);
   });
 });
+
+describe('DELETE /api/admin/users/:id', () => {
+  it('deletes another user', async () => {
+    const { userId } = await authHeader(app);
+    const admin = await adminHeader(app);
+    await request(app).delete(`/api/admin/users/${userId}`).set(admin).expect(204);
+    const res = await request(app).get('/api/admin/stats').set(admin);
+    expect(res.body.users).toBe(1);
+  });
+});
