@@ -24,3 +24,14 @@ export function calculateSavingsRate({ income, expense }: Totals): number {
   if (income <= 0) return 0;
   return Math.round(((income - expense) / income) * 1000) / 10;
 }
+
+/** Sums transaction amounts per category id. */
+export function sumByCategory(
+  transactions: Pick<Transaction, 'categoryId' | 'amount'>[],
+): Map<string, number> {
+  const sums = new Map<string, number>();
+  for (const t of transactions) {
+    sums.set(t.categoryId, (sums.get(t.categoryId) ?? 0) + t.amount);
+  }
+  return sums;
+}
