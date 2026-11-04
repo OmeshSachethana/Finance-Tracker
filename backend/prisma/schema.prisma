@@ -30,6 +30,8 @@ model User {
 
   transactions Transaction[]
 
+  budgets Budget[]
+
   @@map("users")
 }
 
@@ -86,6 +88,7 @@ model Category {
   color        String
   icon         String
   transactions Transaction[]
+  budgets      Budget[]
   createdAt    DateTime        @default(now())
 
   @@unique([userId, name, type])
@@ -113,4 +116,20 @@ model Transaction {
   @@index([categoryId])
   @@index([accountId])
   @@map("transactions")
+}
+
+model Budget {
+  id             String   @id @default(uuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoryId     String
+  category       Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  month          String
+  limit          Int
+  alertThreshold Int      @default(80)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([userId, categoryId, month])
+  @@map("budgets")
 }
