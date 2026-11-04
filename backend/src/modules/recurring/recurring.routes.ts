@@ -1,7 +1,12 @@
-import { createRecurringRuleSchema, updateRecurringRuleSchema } from '@finance-tracker/shared';
+import {
+  createRecurringRuleSchema,
+  toISODate,
+  updateRecurringRuleSchema,
+} from '@finance-tracker/shared';
 import { Router } from 'express';
 import { authenticate } from '../../middleware/authenticate.ts';
 import { validateBody } from '../../middleware/validate.ts';
+import { processDueRules } from './recurring.processor.ts';
 import { toRecurringRuleDto } from './recurring.serializer.ts';
 import {
   createRecurringRule,
@@ -22,6 +27,11 @@ recurringRouter.get('/', async (req, res) => {
 recurringRouter.post('/', validateBody(createRecurringRuleSchema), async (req, res) => {
   const rule = await createRecurringRule(req.user!.sub, req.body);
   res.status(201).json(toRecurringRuleDto(rule));
+});
+
+recurringRouter.post('/run', async (req, res) => {
+  const created = await processDueRules(toISODate(new Date()), req.user!.sub);
+  res.json({ created });
 });
 
 recurringRouter.patch('/:id', validateBody(updateRecurringRuleSchema), async (req, res) => {
