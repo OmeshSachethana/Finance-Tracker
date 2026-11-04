@@ -11,3 +11,13 @@ export function fromMinorUnits(minor: number, currency: CurrencyCode): number {
   const factor = 10 ** CURRENCY_DECIMALS[currency];
   return minor / factor;
 }
+
+/** Formats integer minor units as a localized currency string. */
+export function formatMoney(minor: number, currency: CurrencyCode, locale = 'en-US'): string {
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: CURRENCY_DECIMALS[currency],
+    maximumFractionDigits: CURRENCY_DECIMALS[currency],
+  }).format(fromMinorUnits(minor, currency));
+}
