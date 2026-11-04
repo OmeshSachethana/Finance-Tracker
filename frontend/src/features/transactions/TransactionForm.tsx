@@ -6,7 +6,7 @@ import {
 } from '@finance-tracker/shared';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '@/components/ui/Button';
 import { Field } from '@/components/ui/Field';
@@ -51,7 +51,7 @@ export function TransactionForm({ transaction, onSubmit, onCancel }: Transaction
     handleSubmit,
     getValues,
     setValue,
-    watch,
+    control,
     setError,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
@@ -69,7 +69,7 @@ export function TransactionForm({ transaction, onSubmit, onCancel }: Transaction
   });
   useDefaultAccount('accountId', getValues, setValue);
 
-  const type = watch('type');
+  const type = useWatch({ control, name: 'type' });
   const typeCategories = categories.filter((c) => c.type === type);
 
   const chooseType = (next: TransactionType) => {
