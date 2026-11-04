@@ -215,3 +215,16 @@ describe('POST /api/transactions/bulk-delete', () => {
     expect(theirsAfter.body.total).toBe(1);
   });
 });
+
+describe('GET /api/transactions/export', () => {
+  it('downloads matching transactions as CSV', async () => {
+    const { headers } = await seed(2);
+    const res = await request(app).get('/api/transactions/export').set(headers);
+    expect(res.headers['content-type']).toContain('text/csv');
+    expect(res.headers['content-disposition']).toContain('transactions.csv');
+    const lines = res.text.split('\n');
+    expect(lines[0]).toBe('Date,Type,Description,Category,Account,Amount,Currency,Tags,Notes');
+    expect(lines[1]).toBe('2026-10-01,expense,Lunch 1,Groceries,Cash,10,USD,,');
+    expect(lines).toHaveLength(3);
+  });
+});

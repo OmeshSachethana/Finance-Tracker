@@ -9,6 +9,7 @@ import {
 import { Router } from 'express';
 import { authenticate } from '../../middleware/authenticate.ts';
 import { validateBody, validateQuery } from '../../middleware/validate.ts';
+import { exportTransactionsCsv } from './transactions.export.ts';
 import { toTransactionDto } from './transactions.serializer.ts';
 import {
   createTransaction,
@@ -35,6 +36,11 @@ const listQuerySchema = paginationSchema
 transactionsRouter.get('/', validateQuery(listQuerySchema), async (req, res) => {
   const result = await listTransactions(req.user!.sub, res.locals.query);
   res.json({ ...result, items: result.items.map(toTransactionDto) });
+});
+
+transactionsRouter.get('/export', validateQuery(transactionFiltersSchema), async (req, res) => {
+  const csv = await exportTransactionsCsv(req.user!.sub, res.locals.query);
+  res.attachment('transactions.csv').type('text/csv').send(csv);
 });
 
 transactionsRouter.post('/bulk-delete', validateBody(bulkDeleteSchema), async (req, res) => {
