@@ -1,4 +1,4 @@
-import { calculateSavingsRate, calculateTotals } from './calculations';
+import { calculateSavingsRate, calculateTotals, sumByCategory } from './calculations';
 
 describe('calculateTotals', () => {
   it('returns zeros for no transactions', () => {
@@ -26,5 +26,17 @@ describe('calculateSavingsRate', () => {
 
   it('can be negative when overspending', () => {
     expect(calculateSavingsRate({ income: 1000, expense: 1500, balance: -500 })).toBe(-50);
+  });
+});
+
+describe('sumByCategory', () => {
+  it('groups amounts by category', () => {
+    const sums = sumByCategory([
+      { categoryId: 'food', amount: 100 },
+      { categoryId: 'rent', amount: 900 },
+      { categoryId: 'food', amount: 50 },
+    ]);
+    expect(sums.get('food')).toBe(150);
+    expect(sums.get('rent')).toBe(900);
   });
 });
