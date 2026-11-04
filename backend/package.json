@@ -18,7 +18,7 @@
     "db:seed": "prisma db seed"
   },
   "dependencies": {
-    "@finance-tracker/shared": "^0.1.0",
+    "@finance-tracker/shared": "*",
     "@prisma/adapter-pg": "^7.10.1",
     "@prisma/client": "^7.10.1",
     "bcryptjs": "^3.0.3",
