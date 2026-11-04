@@ -55,3 +55,23 @@ Passwords need at least 8 characters with a lowercase letter, an uppercase lette
 | PATCH  | `/users/me`          | `name?`, `currency?`             | `{ user }`                              |
 | POST   | `/users/me/password` | `currentPassword`, `newPassword` | `204`, signs out other sessions         |
 | DELETE | `/users/me`          | `password`                       | `204`, deletes the account and all data |
+
+## Transactions
+
+| Method | Path                        | Notes                                                                                                                                                                                      |
+| ------ | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| GET    | `/transactions`             | Paginated list. Query: `page`, `pageSize` (max 100), `type`, `categoryId`, `accountId`, `from`, `to`, `search`, `tag`, `sortBy` (`date`, `amount`, `description`), `order` (`asc`, `desc`) |
+| POST   | `/transactions`             | `type`, `amount`, `date`, `description`, `categoryId`, `accountId`, `notes?`, `tags?`                                                                                                      |
+| GET    | `/transactions/:id`         | One transaction                                                                                                                                                                            |
+| PATCH  | `/transactions/:id`         | Any create field                                                                                                                                                                           |
+| DELETE | `/transactions/:id`         | `204`                                                                                                                                                                                      |
+| POST   | `/transactions/bulk-delete` | `{ ids }` (up to 100), returns `{ deleted }`                                                                                                                                               |
+| GET    | `/transactions/export`      | CSV download; accepts the same filters as the list                                                                                                                                         |
+
+The category's type must match the transaction's type.
+
+List responses look like:
+
+```json
+{ "items": [], "page": 1, "pageSize": 20, "total": 37, "totalPages": 2 }
+```
