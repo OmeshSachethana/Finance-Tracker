@@ -6,6 +6,7 @@
   "license": "MIT",
   "author": "Omesh Sachethana",
   "workspaces": [
+    "shared",
     "frontend"
   ],
   "engines": {
