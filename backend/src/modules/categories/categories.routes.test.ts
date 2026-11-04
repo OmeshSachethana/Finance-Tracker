@@ -3,6 +3,7 @@ import request from 'supertest';
 import { createApp } from '../../app.ts';
 import { authHeader } from '../../test/auth.ts';
 import { resetDatabase } from '../../test/db.ts';
+import { userWithDefaults } from '../../test/fixtures.ts';
 
 const app = createApp();
 
@@ -77,5 +78,41 @@ describe('DELETE /api/categories/:id', () => {
     await request(app).delete(`/api/categories/${id}`).set({ Authorization }).expect(204);
     const after = await request(app).get('/api/categories').set({ Authorization });
     expect(after.body.items).toHaveLength(list.body.items.length - 1);
+  });
+});
+
+describe('DELETE /api/categories/:id with transactions', () => {
+  it('refuses to delete a category in use', async () => {
+    const { headers, accountId, groceriesId } = await userWithDefaults(app);
+    await request(app).post('/api/transactions').set(headers).send({
+      type: 'expense',
+      amount: 100,
+      date: '2026-10-01',
+      description: 'Milk',
+      categoryId: groceriesId,
+      accountId,
+    });
+    const res = await request(app).delete(`/api/categories/${groceriesId}`).set(headers);
+    expect(res.status).toBe(409);
+  });
+
+  it('moves transactions to another category when asked', async () => {
+    const { headers, accountId, groceriesId } = await userWithDefaults(app);
+    const list = await request(app).get('/api/categories').set(headers);
+    const food = list.body.items.find((c: { name: string }) => c.name === 'Food & Dining').id;
+    await request(app).post('/api/transactions').set(headers).send({
+      type: 'expense',
+      amount: 100,
+      date: '2026-10-01',
+      description: 'Milk',
+      categoryId: groceriesId,
+      accountId,
+    });
+    await request(app)
+      .delete(`/api/categories/${groceriesId}?reassignTo=${food}`)
+      .set(headers)
+      .expect(204);
+    const txns = await request(app).get('/api/transactions').set(headers);
+    expect(txns.body.items[0].categoryId).toBe(food);
   });
 });
