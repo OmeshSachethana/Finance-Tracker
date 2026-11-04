@@ -13,5 +13,7 @@ export async function login(page: Page, user = DEMO) {
 
 /** Saves a screenshot to e2e/.screenshots for visual review. */
 export async function snap(page: Page, name: string) {
+  // Move the mouse away so hover tooltips do not appear in screenshots.
+  await page.mouse.move(0, 0);
   await page.screenshot({ path: `e2e/.screenshots/${name}.png`, fullPage: true });
 }
