@@ -14,6 +14,7 @@ import { categoriesRouter } from './modules/categories/categories.routes.ts';
 import { recurringRouter } from './modules/recurring/recurring.routes.ts';
 import { statsRouter } from './modules/stats/stats.routes.ts';
 import { transactionsRouter } from './modules/transactions/transactions.routes.ts';
+import { usersRouter } from './modules/users/users.routes.ts';
 import { goalsRouter } from './modules/goals/goals.routes.ts';
 import { healthRouter } from './routes/health.ts';
 
@@ -30,6 +31,7 @@ export function createApp() {
 
   app.use('/api/health', healthRouter);
   app.use('/api/auth', authRouter);
+  app.use('/api/users', usersRouter);
   app.use('/api/categories', categoriesRouter);
   app.use('/api/accounts', accountsRouter);
   app.use('/api/transactions', transactionsRouter);
