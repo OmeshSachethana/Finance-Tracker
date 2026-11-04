@@ -35,3 +35,17 @@ export function sumByCategory(
   }
   return sums;
 }
+
+/** Sums income and expenses per month key (YYYY-MM). */
+export function totalsByMonth(
+  transactions: Pick<Transaction, 'type' | 'amount' | 'date'>[],
+): Map<string, Totals> {
+  const groups = new Map<string, Amounted[]>();
+  for (const t of transactions) {
+    const key = t.date.slice(0, 7);
+    const group = groups.get(key) ?? [];
+    group.push(t);
+    groups.set(key, group);
+  }
+  return new Map([...groups].map(([key, items]) => [key, calculateTotals(items)]));
+}
