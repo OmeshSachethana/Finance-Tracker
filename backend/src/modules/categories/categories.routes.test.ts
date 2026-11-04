@@ -42,3 +42,29 @@ describe('POST /api/categories', () => {
     expect(res.status).toBe(409);
   });
 });
+
+describe('PATCH /api/categories/:id', () => {
+  it('renames a category', async () => {
+    const { Authorization } = await authHeader(app);
+    const list = await request(app).get('/api/categories').set({ Authorization });
+    const id = list.body.items[0].id;
+    const res = await request(app)
+      .patch(`/api/categories/${id}`)
+      .set({ Authorization })
+      .send({ name: 'Renamed' });
+    expect(res.body.name).toBe('Renamed');
+  });
+
+  it("returns 404 for another user's category", async () => {
+    const owner = await authHeader(app);
+    const other = await authHeader(app);
+    const list = await request(app)
+      .get('/api/categories')
+      .set({ Authorization: owner.Authorization });
+    const res = await request(app)
+      .patch(`/api/categories/${list.body.items[0].id}`)
+      .set({ Authorization: other.Authorization })
+      .send({ name: 'Hacked' });
+    expect(res.status).toBe(404);
+  });
+});
