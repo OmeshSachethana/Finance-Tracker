@@ -1,5 +1,5 @@
 import type { CreateAccountInput, UpdateAccountInput } from '@finance-tracker/shared';
-import { notFound } from '../../lib/errors.ts';
+import { conflict, notFound } from '../../lib/errors.ts';
 import { toDbAccountType } from '../../lib/mappers.ts';
 import { prisma } from '../../lib/prisma.ts';
 
@@ -43,4 +43,11 @@ export async function updateAccount(userId: string, id: string, input: UpdateAcc
     where: { id },
     data: { ...input, type: input.type ? toDbAccountType(input.type) : undefined },
   });
+}
+
+export async function deleteAccount(userId: string, id: string) {
+  await getAccount(userId, id);
+  const used = await prisma.transaction.count({ where: { accountId: id } });
+  if (used > 0) throw conflict('This account has transactions. Archive it instead.');
+  await prisma.account.delete({ where: { id } });
 }
