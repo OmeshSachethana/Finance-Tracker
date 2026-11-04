@@ -27,3 +27,8 @@ export const createRecurringRuleSchema = recurringRuleSchema
     path: ['endDate'],
   });
 export type CreateRecurringRuleInput = z.infer<typeof createRecurringRuleSchema>;
+
+export const updateRecurringRuleSchema = recurringRuleSchema
+  .pick({ amount: true, description: true, endDate: true, active: true })
+  .partial();
+export type UpdateRecurringRuleInput = z.infer<typeof updateRecurringRuleSchema>;
