@@ -59,3 +59,19 @@ Open <http://localhost:5180> and sign in with a demo account:
 | ------------------------------------- | ------------------- | ------------- |
 | User with three months of sample data | `demo@example.com`  | `Password123` |
 | Admin                                 | `admin@example.com` | `Password123` |
+
+## Scripts
+
+Run these from the repository root.
+
+| Command                         | What it does                                                               |
+| ------------------------------- | -------------------------------------------------------------------------- |
+| `npm run dev`                   | Starts the API and the app together with live reload                       |
+| `npm test`                      | Runs unit and integration tests in every workspace                         |
+| `npm run test:e2e -w frontend`  | Runs the Playwright end-to-end tests (needs the dev servers and demo data) |
+| `npm run lint`                  | Lints every workspace                                                      |
+| `npm run typecheck`             | Type-checks every workspace                                                |
+| `npm run format`                | Formats the code with Prettier                                             |
+| `npm run build`                 | Builds the frontend for production                                         |
+| `npm run db:migrate -w backend` | Creates and applies a new migration after a schema change                  |
+| `npm run db:studio -w backend`  | Opens Prisma Studio to browse the database                                 |
