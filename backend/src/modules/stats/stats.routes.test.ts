@@ -44,3 +44,21 @@ describe('GET /api/stats/summary', () => {
     expect(res.status).toBe(400);
   });
 });
+
+describe('GET /api/stats/by-category', () => {
+  it('groups expenses by category', async () => {
+    const { headers, groceriesId } = await seed();
+    const res = await request(app)
+      .get('/api/stats/by-category?from=2026-10-01&to=2026-10-31')
+      .set(headers);
+    expect(res.body.items).toEqual([{ categoryId: groceriesId, total: 80000, count: 2 }]);
+  });
+
+  it('can group income instead', async () => {
+    const { headers, salaryId } = await seed();
+    const res = await request(app)
+      .get('/api/stats/by-category?from=2026-10-01&to=2026-10-31&type=income')
+      .set(headers);
+    expect(res.body.items[0].categoryId).toBe(salaryId);
+  });
+});
