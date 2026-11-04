@@ -2,6 +2,8 @@ import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 import { env } from './config/env.ts';
+import { errorHandler } from './middleware/errorHandler.ts';
+import { notFoundHandler } from './middleware/notFound.ts';
 import { healthRouter } from './routes/health.ts';
 
 export function createApp() {
@@ -14,6 +16,9 @@ export function createApp() {
   app.use(express.json({ limit: '100kb' }));
 
   app.use('/api/health', healthRouter);
+
+  app.use(notFoundHandler);
+  app.use(errorHandler);
 
   return app;
 }
