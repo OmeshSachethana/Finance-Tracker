@@ -3,6 +3,7 @@ import { ArrowDown, ArrowUp, Pencil, Trash2 } from 'lucide-react';
 import { Badge } from '@/components/ui/Badge';
 import { Money } from '@/components/ui/Money';
 import type { AccountWithBalance } from '@/features/accounts/api';
+import { cn } from '@/lib/cn';
 import { formatDate } from '@/lib/dates';
 import { useTransactionQuery } from './useTransactionQuery';
 
@@ -19,7 +20,17 @@ interface TransactionTableProps {
 
 type SortField = 'date' | 'description' | 'amount';
 
-function SortHeader({ field, label, align }: { field: SortField; label: string; align?: 'right' }) {
+function SortHeader({
+  field,
+  label,
+  align,
+  className,
+}: {
+  field: SortField;
+  label: string;
+  align?: 'right';
+  className?: string;
+}) {
   const { query, update } = useTransactionQuery();
   const sortBy = query.sortBy ?? 'date';
   const order = query.order ?? 'desc';
@@ -30,7 +41,7 @@ function SortHeader({ field, label, align }: { field: SortField; label: string; 
     <th
       scope="col"
       aria-sort={active ? (order === 'asc' ? 'ascending' : 'descending') : 'none'}
-      className={align === 'right' ? 'px-4 py-3 text-right' : 'px-4 py-3 text-left'}
+      className={cn('px-3 py-3 sm:px-4', align === 'right' ? 'text-right' : 'text-left', className)}
     >
       <button
         type="button"
@@ -69,7 +80,7 @@ export function TransactionTable({
       <table className="w-full text-sm">
         <thead className="border-b border-slate-200 text-xs text-slate-500 uppercase dark:border-slate-800">
           <tr>
-            <th scope="col" className="w-10 px-4 py-3">
+            <th scope="col" className="hidden w-10 px-4 py-3 sm:table-cell">
               <input
                 type="checkbox"
                 aria-label="Select all on this page"
@@ -78,16 +89,16 @@ export function TransactionTable({
                 className="size-4 rounded border-slate-300 accent-brand-600"
               />
             </th>
-            <SortHeader field="date" label="Date" />
+            <SortHeader field="date" label="Date" className="hidden sm:table-cell" />
             <SortHeader field="description" label="Description" />
-            <th scope="col" className="px-4 py-3 text-left font-medium">
+            <th scope="col" className="hidden px-4 py-3 text-left font-medium sm:table-cell">
               Category
             </th>
             <th scope="col" className="hidden px-4 py-3 text-left font-medium md:table-cell">
               Account
             </th>
             <SortHeader field="amount" label="Amount" align="right" />
-            <th scope="col" className="w-20 px-4 py-3">
+            <th scope="col" className="w-20 px-3 py-3 sm:px-4">
               <span className="sr-only">Actions</span>
             </th>
           </tr>
@@ -97,7 +108,7 @@ export function TransactionTable({
             const category = categoryById.get(t.categoryId);
             return (
               <tr key={t.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                <td className="px-4 py-3">
+                <td className="hidden px-4 py-3 sm:table-cell">
                   <input
                     type="checkbox"
                     aria-label={`Select ${t.description}`}
@@ -106,9 +117,14 @@ export function TransactionTable({
                     className="size-4 rounded border-slate-300 accent-brand-600"
                   />
                 </td>
-                <td className="px-4 py-3 whitespace-nowrap text-slate-500">{formatDate(t.date)}</td>
-                <td className="px-4 py-3">
+                <td className="hidden px-4 py-3 whitespace-nowrap text-slate-500 sm:table-cell">
+                  {formatDate(t.date)}
+                </td>
+                <td className="px-3 py-3 sm:px-4">
                   <p className="font-medium">{t.description}</p>
+                  <p className="mt-0.5 text-xs text-slate-500 sm:hidden">
+                    {formatDate(t.date)} · {category?.name ?? 'Unknown'}
+                  </p>
                   {t.tags.length > 0 && (
                     <div className="mt-1 flex flex-wrap gap-1">
                       {t.tags.map((tag) => (
@@ -117,7 +133,7 @@ export function TransactionTable({
                     </div>
                   )}
                 </td>
-                <td className="px-4 py-3">
+                <td className="hidden px-4 py-3 sm:table-cell">
                   <span className="inline-flex items-center gap-2">
                     <span
                       aria-hidden
@@ -130,10 +146,10 @@ export function TransactionTable({
                 <td className="hidden px-4 py-3 text-slate-500 md:table-cell">
                   {accountById.get(t.accountId)?.name}
                 </td>
-                <td className="px-4 py-3 text-right font-medium">
+                <td className="px-3 py-3 text-right font-medium whitespace-nowrap sm:px-4">
                   <Money amount={t.amount} type={t.type} />
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-3 py-3 sm:px-4">
                   <div className="flex justify-end gap-1">
                     <button
                       type="button"
