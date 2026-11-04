@@ -1,4 +1,4 @@
-import { formatMoney, fromMinorUnits, toMinorUnits } from './money';
+import { formatMoney, fromMinorUnits, toMinorUnits } from './money.ts';
 
 describe('toMinorUnits', () => {
   it('converts dollars to cents', () => {

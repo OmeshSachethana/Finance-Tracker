@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { transactionTypeSchema } from './category';
-import { amountSchema, idSchema, isoDateSchema } from './common';
+import { transactionTypeSchema } from './category.ts';
+import { amountSchema, idSchema, isoDateSchema } from './common.ts';
 
 export const transactionSchema = z.object({
   id: idSchema,

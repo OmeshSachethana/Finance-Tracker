@@ -1,4 +1,4 @@
-import { createCategorySchema } from './category';
+import { createCategorySchema } from './category.ts';
 
 describe('createCategorySchema', () => {
   const valid = { name: 'Food', type: 'expense', color: '#f97316', icon: 'utensils' };

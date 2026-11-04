@@ -1,5 +1,5 @@
-import { createCategorySchema } from '../schemas/category';
-import { DEFAULT_CATEGORIES } from './categories';
+import { createCategorySchema } from '../schemas/category.ts';
+import { DEFAULT_CATEGORIES } from './categories.ts';
 
 describe('DEFAULT_CATEGORIES', () => {
   it('are all valid categories', () => {

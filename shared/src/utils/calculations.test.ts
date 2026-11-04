@@ -3,7 +3,7 @@ import {
   calculateTotals,
   sumByCategory,
   totalsByMonth,
-} from './calculations';
+} from './calculations.ts';
 
 describe('calculateTotals', () => {
   it('returns zeros for no transactions', () => {

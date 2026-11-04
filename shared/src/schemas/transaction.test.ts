@@ -1,4 +1,4 @@
-import { createTransactionSchema, transactionSortSchema } from './transaction';
+import { createTransactionSchema, transactionSortSchema } from './transaction.ts';
 
 const valid = {
   type: 'expense',

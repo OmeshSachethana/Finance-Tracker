@@ -1,4 +1,4 @@
-import { loginSchema, passwordSchema, registerSchema } from './auth';
+import { loginSchema, passwordSchema, registerSchema } from './auth.ts';
 
 describe('passwordSchema', () => {
   it('accepts a strong password', () => {

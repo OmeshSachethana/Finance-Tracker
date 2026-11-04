@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { amountSchema, hexColorSchema, idSchema, isoDateSchema } from './common';
+import { amountSchema, hexColorSchema, idSchema, isoDateSchema } from './common.ts';
 
 export const goalSchema = z.object({
   id: idSchema,

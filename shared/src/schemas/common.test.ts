@@ -1,4 +1,4 @@
-import { amountSchema, currencySchema, hexColorSchema } from './common';
+import { amountSchema, currencySchema, hexColorSchema } from './common.ts';
 
 describe('amountSchema', () => {
   it('accepts positive integers', () => {

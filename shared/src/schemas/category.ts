@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { hexColorSchema, idSchema } from './common';
+import { hexColorSchema, idSchema } from './common.ts';
 
 export const transactionTypeSchema = z.enum(['income', 'expense']);
 export type TransactionType = z.infer<typeof transactionTypeSchema>;

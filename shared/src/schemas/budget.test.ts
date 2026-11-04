@@ -1,4 +1,4 @@
-import { createBudgetSchema, monthKeySchema } from './budget';
+import { createBudgetSchema, monthKeySchema } from './budget.ts';
 
 describe('monthKeySchema', () => {
   it('accepts YYYY-MM', () => {

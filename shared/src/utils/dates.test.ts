@@ -1,4 +1,4 @@
-import { getMonthRange, toISODate, toMonthKey } from './dates';
+import { getMonthRange, toISODate, toMonthKey } from './dates.ts';
 
 describe('toISODate', () => {
   it('pads month and day', () => {

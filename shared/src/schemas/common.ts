@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { CURRENCIES } from '../constants/currencies';
+import { CURRENCIES } from '../constants/currencies.ts';
 
 export const idSchema = z.uuid();
 

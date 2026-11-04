@@ -1,4 +1,4 @@
-import { paginationSchema } from './pagination';
+import { paginationSchema } from './pagination.ts';
 
 describe('paginationSchema', () => {
   it('uses defaults when empty', () => {

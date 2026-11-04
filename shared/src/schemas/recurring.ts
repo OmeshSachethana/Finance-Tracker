@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { createTransactionSchema } from './transaction';
-import { idSchema, isoDateSchema } from './common';
+import { createTransactionSchema } from './transaction.ts';
+import { idSchema, isoDateSchema } from './common.ts';
 
 export const frequencySchema = z.enum(['daily', 'weekly', 'monthly', 'yearly']);
 export type Frequency = z.infer<typeof frequencySchema>;

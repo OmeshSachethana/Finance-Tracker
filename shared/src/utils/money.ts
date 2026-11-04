@@ -1,4 +1,4 @@
-import { CURRENCY_DECIMALS, type CurrencyCode } from '../constants/currencies';
+import { CURRENCY_DECIMALS, type CurrencyCode } from '../constants/currencies.ts';
 
 /** Converts a decimal amount (e.g. 12.34) to integer minor units (e.g. 1234). */
 export function toMinorUnits(amount: number, currency: CurrencyCode): number {

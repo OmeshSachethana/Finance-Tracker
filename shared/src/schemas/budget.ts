@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { amountSchema, idSchema } from './common';
+import { amountSchema, idSchema } from './common.ts';
 
 export const monthKeySchema = z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/, 'Month must be YYYY-MM');
 

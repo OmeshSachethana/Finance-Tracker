@@ -1,4 +1,4 @@
-import type { Transaction } from '../schemas/transaction';
+import type { Transaction } from '../schemas/transaction.ts';
 
 type Amounted = Pick<Transaction, 'type' | 'amount'>;
 

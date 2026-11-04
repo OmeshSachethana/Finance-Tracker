@@ -1,4 +1,4 @@
-import { getBudgetProgress } from './budget';
+import { getBudgetProgress } from './budget.ts';
 
 describe('getBudgetProgress', () => {
   it('is ok below the threshold', () => {

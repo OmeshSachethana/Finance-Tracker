@@ -1,4 +1,4 @@
-import type { CreateCategoryInput } from '../schemas/category';
+import type { CreateCategoryInput } from '../schemas/category.ts';
 
 export const DEFAULT_EXPENSE_CATEGORIES: CreateCategoryInput[] = [
   { name: 'Food & Dining', type: 'expense', color: '#f97316', icon: 'utensils' },
