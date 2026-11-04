@@ -86,4 +86,10 @@ describe('GET /api/transactions filters', () => {
     const res = await request(app).get('/api/transactions?type=income').set(headers);
     expect(res.body.total).toBe(2);
   });
+
+  it('filters by category', async () => {
+    const { headers, salaryId } = await seed(6);
+    const res = await request(app).get(`/api/transactions?categoryId=${salaryId}`).set(headers);
+    expect(res.body.total).toBe(2);
+  });
 });
