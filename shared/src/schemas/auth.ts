@@ -22,3 +22,15 @@ export const registerSchema = z.object({
   password: passwordSchema,
 });
 export type RegisterInput = z.infer<typeof registerSchema>;
+
+export const userRoleSchema = z.enum(['user', 'admin']);
+export type UserRole = z.infer<typeof userRoleSchema>;
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  currency: string;
+  createdAt: string;
+}
