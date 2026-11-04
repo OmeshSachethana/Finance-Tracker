@@ -22,6 +22,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "husky",
-    "dev": "npm run dev -w frontend"
+    "dev": "npm run dev -w frontend",
+    "build": "npm run build --workspaces"
   }
 }
