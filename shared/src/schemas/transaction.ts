@@ -9,6 +9,7 @@ export const transactionSchema = z.object({
   date: isoDateSchema,
   description: z.string().trim().min(1, 'Description is required').max(120),
   notes: z.string().trim().max(500).optional(),
+  tags: z.array(z.string().trim().min(1).max(24)).max(10).default([]),
   categoryId: idSchema,
   accountId: idSchema,
 });
