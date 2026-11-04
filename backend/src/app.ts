@@ -13,6 +13,7 @@ import { budgetsRouter } from './modules/budgets/budgets.routes.ts';
 import { categoriesRouter } from './modules/categories/categories.routes.ts';
 import { statsRouter } from './modules/stats/stats.routes.ts';
 import { transactionsRouter } from './modules/transactions/transactions.routes.ts';
+import { goalsRouter } from './modules/goals/goals.routes.ts';
 import { healthRouter } from './routes/health.ts';
 
 export function createApp() {
@@ -33,6 +34,7 @@ export function createApp() {
   app.use('/api/transactions', transactionsRouter);
   app.use('/api/stats', statsRouter);
   app.use('/api/budgets', budgetsRouter);
+  app.use('/api/goals', goalsRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
