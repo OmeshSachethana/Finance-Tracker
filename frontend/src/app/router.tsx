@@ -6,6 +6,7 @@ import { RequireAuth } from '@/features/auth/RequireAuth';
 import { LoginPage } from '@/pages/LoginPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { RegisterPage } from '@/pages/RegisterPage';
+import { TransactionsPage } from '@/pages/TransactionsPage';
 
 export const routes = [
   {
@@ -27,6 +28,7 @@ export const routes = [
         element: <AppLayout />,
         children: [
           { index: true, element: <h1 className="text-2xl font-semibold">Dashboard</h1> },
+          { path: 'transactions', element: <TransactionsPage /> },
           { path: '*', element: <NotFoundPage /> },
         ],
       },
