@@ -3,6 +3,7 @@ import { AppLayout } from '@/components/layout/AppLayout';
 import { AuthLayout } from '@/components/layout/AuthLayout';
 import { RedirectIfAuthenticated } from '@/features/auth/RedirectIfAuthenticated';
 import { RequireAuth } from '@/features/auth/RequireAuth';
+import { BudgetsPage } from '@/pages/BudgetsPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { LoginPage } from '@/pages/LoginPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
@@ -30,6 +31,7 @@ export const routes = [
         children: [
           { index: true, element: <DashboardPage /> },
           { path: 'transactions', element: <TransactionsPage /> },
+          { path: 'budgets', element: <BudgetsPage /> },
           { path: '*', element: <NotFoundPage /> },
         ],
       },
