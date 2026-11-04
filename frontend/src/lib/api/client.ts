@@ -51,6 +51,28 @@ async function parse<T>(res: Response): Promise<T> {
   return data as T;
 }
 
+let refreshing: Promise<boolean> | null = null;
+
+/** Tries to get a new access token using the refresh cookie. Shares one request between callers. */
+export function refreshAccessToken(): Promise<boolean> {
+  refreshing ??= fetch('/api/auth/refresh', { method: 'POST', credentials: 'include' })
+    .then(async (res) => {
+      if (!res.ok) return false;
+      const data = (await res.json()) as { accessToken: string };
+      setAccessToken(data.accessToken);
+      return true;
+    })
+    .catch(() => false)
+    .finally(() => {
+      refreshing = null;
+    });
+  return refreshing;
+}
+
 export async function api<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  return parse<T>(await send(path, options));
+  let res = await send(path, options);
+  if (res.status === 401 && !path.startsWith('/auth/') && (await refreshAccessToken())) {
+    res = await send(path, options);
+  }
+  return parse<T>(res);
 }

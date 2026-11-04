@@ -56,3 +56,25 @@ describe('api', () => {
     expect(await api('/goals/1', { method: 'DELETE' })).toBeUndefined();
   });
 });
+
+describe('token refresh', () => {
+  it('refreshes once and retries after a 401', async () => {
+    const fetch = mockFetch(
+      json(401, { error: { code: 'UNAUTHORIZED', message: 'Expired' } }),
+      json(200, { accessToken: 'new-token' }),
+      json(200, { items: [] }),
+    );
+    expect(await api('/goals')).toEqual({ items: [] });
+    expect(fetch.mock.calls[1]![0]).toBe('/api/auth/refresh');
+    const retry = fetch.mock.calls[2]![1] as RequestInit;
+    expect((retry.headers as Record<string, string>)['Authorization']).toBe('Bearer new-token');
+  });
+
+  it('gives up when the refresh fails', async () => {
+    mockFetch(
+      json(401, { error: { code: 'UNAUTHORIZED', message: 'Expired' } }),
+      json(401, { error: { code: 'UNAUTHORIZED', message: 'No session' } }),
+    );
+    await expect(api('/goals')).rejects.toMatchObject({ status: 401 });
+  });
+});
