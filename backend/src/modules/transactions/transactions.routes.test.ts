@@ -112,4 +112,22 @@ describe('GET /api/transactions filters', () => {
     const res = await request(app).get('/api/transactions?search=coffee').set(headers);
     expect(res.body.total).toBe(3);
   });
+
+  it('filters by tag', async () => {
+    const { headers, accountId, groceriesId } = await userWithDefaults(app);
+    await request(app)
+      .post('/api/transactions')
+      .set(headers)
+      .send({
+        type: 'expense',
+        amount: 500,
+        date: '2026-10-01',
+        description: 'Snacks',
+        tags: ['trip'],
+        categoryId: groceriesId,
+        accountId,
+      });
+    const res = await request(app).get('/api/transactions?tag=trip').set(headers);
+    expect(res.body.total).toBe(1);
+  });
 });

@@ -25,5 +25,6 @@ export function buildTransactionWhere(
           { notes: { contains: filters.search, mode: 'insensitive' } },
         ]
       : undefined,
+    tags: filters.tag ? { has: filters.tag } : undefined,
   };
 }

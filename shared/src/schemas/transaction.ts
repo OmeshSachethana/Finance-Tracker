@@ -28,6 +28,7 @@ export const transactionFiltersSchema = z.object({
   from: isoDateSchema.optional(),
   to: isoDateSchema.optional(),
   search: z.string().trim().max(100).optional(),
+  tag: z.string().trim().max(24).optional(),
 });
 export type TransactionFilters = z.infer<typeof transactionFiltersSchema>;
 
