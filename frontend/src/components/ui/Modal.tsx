@@ -1,5 +1,5 @@
 import { X } from 'lucide-react';
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useId, useRef, type ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 
 interface ModalProps {
@@ -14,6 +14,7 @@ interface ModalProps {
 /** Accessible modal built on the native <dialog> element (focus trap and Escape for free). */
 export function Modal({ open, onClose, title, children, footer, className }: ModalProps) {
   const ref = useRef<HTMLDialogElement>(null);
+  const titleId = useId();
 
   useEffect(() => {
     const dialog = ref.current;
@@ -26,7 +27,7 @@ export function Modal({ open, onClose, title, children, footer, className }: Mod
     <dialog
       ref={ref}
       onClose={onClose}
-      aria-labelledby="modal-title"
+      aria-labelledby={titleId}
       className={cn(
         'm-auto w-full max-w-lg rounded-xl border border-slate-200 bg-white p-0 text-slate-900 shadow-xl backdrop:bg-slate-950/50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100',
         className,
@@ -35,7 +36,7 @@ export function Modal({ open, onClose, title, children, footer, className }: Mod
       {open && (
         <>
           <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4 dark:border-slate-800">
-            <h2 id="modal-title" className="text-lg font-semibold">
+            <h2 id={titleId} className="text-lg font-semibold">
               {title}
             </h2>
             <button
