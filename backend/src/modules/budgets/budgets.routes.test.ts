@@ -63,4 +63,15 @@ describe('budgets', () => {
       .send({ limit: 50000, alertThreshold: 90 });
     expect(res.body).toMatchObject({ limit: 50000, alertThreshold: 90 });
   });
+
+  it('deletes a budget', async () => {
+    const { headers, groceriesId } = await userWithDefaults(app);
+    const created = await request(app)
+      .post('/api/budgets')
+      .set(headers)
+      .send({ categoryId: groceriesId, month: '2026-11', limit: 40000 });
+    await request(app).delete(`/api/budgets/${created.body.id}`).set(headers).expect(204);
+    const res = await request(app).get('/api/budgets?month=2026-11').set(headers);
+    expect(res.body.items).toHaveLength(0);
+  });
 });

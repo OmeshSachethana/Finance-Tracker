@@ -56,3 +56,8 @@ export async function updateBudget(userId: string, id: string, input: UpdateBudg
   await getBudget(userId, id);
   return prisma.budget.update({ where: { id }, data: input });
 }
+
+export async function deleteBudget(userId: string, id: string) {
+  await getBudget(userId, id);
+  await prisma.budget.delete({ where: { id } });
+}
