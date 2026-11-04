@@ -3,6 +3,7 @@ import { Router } from 'express';
 import { unauthorized } from '../../lib/errors.ts';
 import { prisma } from '../../lib/prisma.ts';
 import { verifyAccessToken } from '../../lib/tokens.ts';
+import { authenticate } from '../../middleware/authenticate.ts';
 import { validateBody } from '../../middleware/validate.ts';
 import { toUserDto } from './auth.serializer.ts';
 import { loginUser, registerUser } from './auth.service.ts';
@@ -42,4 +43,10 @@ authRouter.post('/logout', async (req, res) => {
   if (typeof token === 'string') await revokeSession(token);
   clearRefreshCookie(res);
   res.status(204).end();
+});
+
+authRouter.get('/me', authenticate, async (req, res) => {
+  const user = await prisma.user.findUnique({ where: { id: req.user!.sub } });
+  if (!user) throw unauthorized('User no longer exists');
+  res.json({ user: toUserDto(user) });
 });
