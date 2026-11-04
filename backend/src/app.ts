@@ -22,6 +22,8 @@ export function createApp() {
   const app = express();
 
   app.disable('x-powered-by');
+  // Behind a reverse proxy in production; needed for correct client IPs in rate limiting.
+  if (env.NODE_ENV === 'production') app.set('trust proxy', 1);
 
   app.use(pinoHttp({ logger }));
   app.use(helmet());
