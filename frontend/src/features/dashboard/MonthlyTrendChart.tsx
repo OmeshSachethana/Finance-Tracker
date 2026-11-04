@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { useMoney } from '@/hooks/useMoney';
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion';
 import { formatMonth } from '@/lib/dates';
 
 const SERIES = [
@@ -85,6 +86,7 @@ function TrendTable({ items }: { items: MonthlyTrendItem[] }) {
 export function MonthlyTrendChart({ items }: { items: MonthlyTrendItem[] | undefined }) {
   const { formatCompact } = useMoney();
   const [showTable, setShowTable] = useState(false);
+  const reduceMotion = usePrefersReducedMotion();
 
   return (
     <Card>
@@ -135,6 +137,7 @@ export function MonthlyTrendChart({ items }: { items: MonthlyTrendItem[] | undef
                     fill={s.color}
                     radius={[4, 4, 0, 0]}
                     maxBarSize={24}
+                    isAnimationActive={!reduceMotion}
                   />
                 ))}
               </BarChart>
