@@ -25,4 +25,15 @@ describe('goals', () => {
       completed: false,
     });
   });
+
+  it('updates and deletes a goal', async () => {
+    const { Authorization } = await authHeader(app);
+    const created = await request(app).post('/api/goals').set({ Authorization }).send(goal);
+    const updated = await request(app)
+      .patch(`/api/goals/${created.body.id}`)
+      .set({ Authorization })
+      .send({ name: 'Rainy day fund' });
+    expect(updated.body.name).toBe('Rainy day fund');
+    await request(app).delete(`/api/goals/${created.body.id}`).set({ Authorization }).expect(204);
+  });
 });

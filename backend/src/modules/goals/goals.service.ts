@@ -1,4 +1,5 @@
-import type { CreateGoalInput } from '@finance-tracker/shared';
+import type { CreateGoalInput, UpdateGoalInput } from '@finance-tracker/shared';
+import { notFound } from '../../lib/errors.ts';
 import { toDbDate } from '../../lib/mappers.ts';
 import { prisma } from '../../lib/prisma.ts';
 
@@ -10,4 +11,23 @@ export function createGoal(userId: string, input: CreateGoalInput) {
   return prisma.goal.create({
     data: { ...input, deadline: input.deadline ? toDbDate(input.deadline) : undefined, userId },
   });
+}
+
+async function getGoal(userId: string, id: string) {
+  const goal = await prisma.goal.findFirst({ where: { id, userId } });
+  if (!goal) throw notFound('Goal not found');
+  return goal;
+}
+
+export async function updateGoal(userId: string, id: string, input: UpdateGoalInput) {
+  await getGoal(userId, id);
+  return prisma.goal.update({
+    where: { id },
+    data: { ...input, deadline: input.deadline ? toDbDate(input.deadline) : undefined },
+  });
+}
+
+export async function deleteGoal(userId: string, id: string) {
+  await getGoal(userId, id);
+  await prisma.goal.delete({ where: { id } });
 }
