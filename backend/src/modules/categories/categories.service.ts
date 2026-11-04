@@ -56,3 +56,21 @@ export async function deleteCategory(userId: string, id: string) {
   }
   await prisma.category.delete({ where: { id } });
 }
+
+/** Moves all transactions and budgets from one category to another, then deletes it. */
+export async function deleteCategoryAndReassign(userId: string, id: string, targetId: string) {
+  if (id === targetId) throw conflict('Choose a different category to move transactions to');
+  const [source, target] = await Promise.all([
+    getCategory(userId, id),
+    getCategory(userId, targetId),
+  ]);
+  if (source.type !== target.type) {
+    throw conflict('Transactions can only move to a category of the same type');
+  }
+
+  await prisma.$transaction([
+    prisma.transaction.updateMany({ where: { categoryId: id }, data: { categoryId: targetId } }),
+    prisma.budget.deleteMany({ where: { categoryId: id } }),
+    prisma.category.delete({ where: { id } }),
+  ]);
+}

@@ -6,6 +6,7 @@ import { toCategoryDto } from './categories.serializer.ts';
 import {
   createCategory,
   deleteCategory,
+  deleteCategoryAndReassign,
   listCategories,
   updateCategory,
 } from './categories.service.ts';
@@ -30,6 +31,11 @@ categoriesRouter.patch('/:id', validateBody(updateCategorySchema), async (req, r
 });
 
 categoriesRouter.delete('/:id', async (req, res) => {
-  await deleteCategory(req.user!.sub, req.params.id as string);
+  const reassignTo = req.query['reassignTo'];
+  if (typeof reassignTo === 'string') {
+    await deleteCategoryAndReassign(req.user!.sub, req.params.id as string, reassignTo);
+  } else {
+    await deleteCategory(req.user!.sub, req.params.id as string);
+  }
   res.status(204).end();
 });
