@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
 import { Textarea } from '@/components/ui/Textarea';
 import { useAccounts } from '@/features/accounts/api';
+import { useDefaultAccount } from '@/features/accounts/useDefaultAccount';
 import { useCategories } from '@/features/categories/api';
 import { useMoney } from '@/hooks/useMoney';
 import { formatAmountInput, parseAmountInput } from '@/lib/amount';
@@ -48,8 +49,9 @@ export function TransactionForm({ transaction, onSubmit, onCancel }: Transaction
   const {
     register,
     handleSubmit,
-    watch,
+    getValues,
     setValue,
+    watch,
     setError,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
@@ -65,6 +67,7 @@ export function TransactionForm({ transaction, onSubmit, onCancel }: Transaction
       notes: transaction?.notes ?? '',
     },
   });
+  useDefaultAccount('accountId', getValues, setValue);
 
   const type = watch('type');
   const typeCategories = categories.filter((c) => c.type === type);

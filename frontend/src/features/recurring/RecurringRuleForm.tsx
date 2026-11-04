@@ -9,6 +9,7 @@ import { FormAlert } from '@/components/ui/FormAlert';
 import { Input } from '@/components/ui/Input';
 import { Select } from '@/components/ui/Select';
 import { useAccounts } from '@/features/accounts/api';
+import { useDefaultAccount } from '@/features/accounts/useDefaultAccount';
 import { useCategories } from '@/features/categories/api';
 import { useMoney } from '@/hooks/useMoney';
 import { parseAmountInput } from '@/lib/amount';
@@ -45,6 +46,8 @@ export function RecurringRuleForm({ onSubmit, onCancel }: RecurringRuleFormProps
   const {
     register,
     handleSubmit,
+    getValues,
+    setValue,
     watch,
     setError,
     formState: { errors, isSubmitting },
@@ -61,6 +64,7 @@ export function RecurringRuleForm({ onSubmit, onCancel }: RecurringRuleFormProps
       endDate: '',
     },
   });
+  useDefaultAccount('accountId', getValues, setValue);
   const type = watch('type');
 
   const submit = handleSubmit(async (values) => {
