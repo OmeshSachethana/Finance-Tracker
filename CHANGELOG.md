@@ -19,6 +19,8 @@ First release.
 - Categories with colours and icons, including moving transactions when deleting one.
 - Profile settings, display currency, password change and account deletion.
 - Admin area with platform statistics, user search, role changes and user removal.
+- Budget overview on the dashboard showing the categories closest to their limit.
+- Page titles in the browser tab and an `N` keyboard shortcut to add a transaction.
 - Dark mode, mobile layout and reduced-motion support.
 - Docker images and a production Compose stack with nginx.
 - Unit, integration and end-to-end tests running in GitHub Actions.
