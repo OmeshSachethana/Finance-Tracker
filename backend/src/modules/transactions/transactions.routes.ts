@@ -2,6 +2,7 @@ import {
   createTransactionSchema,
   paginationSchema,
   transactionFiltersSchema,
+  transactionSortSchema,
 } from '@finance-tracker/shared';
 import { Router } from 'express';
 import { authenticate } from '../../middleware/authenticate.ts';
@@ -18,7 +19,9 @@ transactionsRouter.post('/', validateBody(createTransactionSchema), async (req, 
   res.status(201).json(toTransactionDto(transaction));
 });
 
-const listQuerySchema = paginationSchema.extend(transactionFiltersSchema.shape);
+const listQuerySchema = paginationSchema
+  .extend(transactionFiltersSchema.shape)
+  .extend(transactionSortSchema.shape);
 
 transactionsRouter.get('/', validateQuery(listQuerySchema), async (req, res) => {
   const result = await listTransactions(req.user!.sub, res.locals.query);

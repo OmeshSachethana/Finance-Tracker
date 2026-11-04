@@ -131,3 +131,17 @@ describe('GET /api/transactions filters', () => {
     expect(res.body.total).toBe(1);
   });
 });
+
+describe('GET /api/transactions sorting', () => {
+  it('sorts by amount ascending', async () => {
+    const { headers } = await seed(3);
+    const res = await request(app).get('/api/transactions?sortBy=amount&order=asc').set(headers);
+    expect(res.body.items.map((t: { amount: number }) => t.amount)).toEqual([1000, 2000, 3000]);
+  });
+
+  it('rejects unknown sort fields', async () => {
+    const { headers } = await seed(1);
+    const res = await request(app).get('/api/transactions?sortBy=userId').set(headers);
+    expect(res.status).toBe(400);
+  });
+});

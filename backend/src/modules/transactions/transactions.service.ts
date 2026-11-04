@@ -2,6 +2,7 @@ import type {
   CreateTransactionInput,
   Pagination,
   TransactionFilters,
+  TransactionSort,
 } from '@finance-tracker/shared';
 import { badRequest } from '../../lib/errors.ts';
 import { toDbDate, toDbTransactionType } from '../../lib/mappers.ts';
@@ -29,13 +30,13 @@ export async function createTransaction(userId: string, input: ParsedCreateInput
 
 export async function listTransactions(
   userId: string,
-  { page, pageSize, ...filters }: Pagination & TransactionFilters,
+  { page, pageSize, sortBy, order, ...filters }: Pagination & TransactionFilters & TransactionSort,
 ) {
   const where = buildTransactionWhere(userId, filters);
   const [items, total] = await Promise.all([
     prisma.transaction.findMany({
       where,
-      orderBy: [{ date: 'desc' }, { createdAt: 'desc' }],
+      orderBy: [{ [sortBy]: order }, { createdAt: 'desc' }],
       skip: (page - 1) * pageSize,
       take: pageSize,
     }),
