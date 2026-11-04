@@ -12,7 +12,7 @@ test('creates a goal, saves towards it and completes it', async ({ page }) => {
   await form.getByLabel('Target (USD)').fill('500');
   await form.getByRole('button', { name: 'Create goal' }).click();
 
-  const card = page.locator('div', { has: page.getByRole('heading', { name }) }).last();
+  const card = page.getByRole('article', { name });
   await card.getByRole('button', { name: 'Add money' }).click();
   await page.getByRole('dialog', { name }).getByLabel('Amount (USD)').fill('200');
   await page.getByRole('dialog', { name }).getByRole('button', { name: 'Add money' }).click();
