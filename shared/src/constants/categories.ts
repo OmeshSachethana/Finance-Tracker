@@ -12,3 +12,11 @@ export const DEFAULT_EXPENSE_CATEGORIES: CreateCategoryInput[] = [
   { name: 'Education', type: 'expense', color: '#6366f1', icon: 'graduation-cap' },
   { name: 'Other', type: 'expense', color: '#64748b', icon: 'circle-ellipsis' },
 ];
+
+export const DEFAULT_INCOME_CATEGORIES: CreateCategoryInput[] = [
+  { name: 'Salary', type: 'income', color: '#22c55e', icon: 'briefcase' },
+  { name: 'Freelance', type: 'income', color: '#10b981', icon: 'laptop' },
+  { name: 'Investments', type: 'income', color: '#06b6d4', icon: 'trending-up' },
+  { name: 'Gifts', type: 'income', color: '#a855f7', icon: 'gift' },
+  { name: 'Other Income', type: 'income', color: '#64748b', icon: 'circle-plus' },
+];
