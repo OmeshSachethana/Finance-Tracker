@@ -70,3 +70,12 @@ export function generateSampleTransactions(today = new Date()): SampleTransactio
   }
   return items;
 }
+
+/** Demo monthly limits in minor units: [category, limit]. */
+export const DEMO_BUDGETS: [category: string, limit: number][] = [
+  ['Housing', 160000],
+  ['Groceries', 40000],
+  ['Food & Dining', 15000],
+  ['Transport', 20000],
+  ['Entertainment', 8000],
+];

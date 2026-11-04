@@ -1,8 +1,8 @@
-import { DEFAULT_CATEGORIES } from '@finance-tracker/shared';
+import { DEFAULT_CATEGORIES, toMonthKey } from '@finance-tracker/shared';
 import { toDbDate } from '../src/lib/mappers.ts';
 import { hashPassword } from '../src/lib/password.ts';
 import { prisma } from '../src/lib/prisma.ts';
-import { generateSampleTransactions } from './seed-data.ts';
+import { DEMO_BUDGETS, generateSampleTransactions } from './seed-data.ts';
 
 const DEMO_EMAIL = 'demo@example.com';
 const ADMIN_EMAIL = 'admin@example.com';
@@ -53,10 +53,28 @@ async function seedDemoData(userId: string) {
   });
 }
 
+/** Budgets for the current month so the budget pages have something to show. */
+async function seedDemoBudgets(userId: string) {
+  const categories = await prisma.category.findMany({ where: { userId } });
+  const categoryId = (name: string) => categories.find((c) => c.name === name)!.id;
+  const month = toMonthKey(new Date());
+
+  await prisma.budget.createMany({
+    data: DEMO_BUDGETS.map(([name, limit]) => ({
+      userId,
+      categoryId: categoryId(name),
+      month,
+      limit,
+    })),
+    skipDuplicates: true,
+  });
+}
+
 async function main() {
   await upsertUser(ADMIN_EMAIL, 'Admin', 'ADMIN');
   const demo = await upsertUser(DEMO_EMAIL, 'Demo User', 'USER');
   await seedDemoData(demo.id);
+  await seedDemoBudgets(demo.id);
   console.log(`Seeded ${ADMIN_EMAIL} and ${DEMO_EMAIL} (password: ${PASSWORD})`);
 }
 
