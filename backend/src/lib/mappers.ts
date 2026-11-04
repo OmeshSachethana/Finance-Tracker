@@ -19,3 +19,13 @@ export function toDbAccountType(type: AccountType): DbAccountType {
 export function fromDbAccountType(type: DbAccountType): AccountType {
   return type.toLowerCase() as AccountType;
 }
+
+/** Converts a database DATE value to YYYY-MM-DD. */
+export function fromDbDate(date: Date): string {
+  return date.toISOString().slice(0, 10);
+}
+
+/** Converts YYYY-MM-DD to a Date at UTC midnight for a DATE column. */
+export function toDbDate(isoDate: string): Date {
+  return new Date(`${isoDate}T00:00:00.000Z`);
+}
