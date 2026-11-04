@@ -97,3 +97,11 @@ Run these from the repository root.
 ├── shared/             Schemas, types and helpers used by both apps
 └── docker-compose*.yml Local database and the production-like stack
 ```
+
+## How it works
+
+- **Money** is stored as whole minor units (cents) to avoid floating point errors, and formatted in the user's chosen currency.
+- **Authentication** uses a short-lived access token kept in memory plus a refresh token in an `httpOnly`, `SameSite=Strict` cookie. Refresh tokens are stored hashed and rotated on every use, so a stolen token stops working after one refresh.
+- **Validation** rules live in `shared/` and run both in the browser forms and on the API, so the two never disagree.
+- **Recurring rules** are processed hourly. A monthly rule that starts on the 31st falls on the last day of shorter months and returns to the 31st afterwards.
+- **Security**: Helmet headers, CORS limited to the app origin, request size limits, login rate limiting, password hashing with bcrypt, and CSV export protected against spreadsheet formula injection.
