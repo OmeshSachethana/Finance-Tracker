@@ -1,0 +1,15 @@
+{
+  "name": "finance-tracker",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Full-stack personal finance and expense tracker",
+  "license": "MIT",
+  "author": "Omesh Sachethana",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "engines": {
+    "node": ">=24"
+  }
+}
