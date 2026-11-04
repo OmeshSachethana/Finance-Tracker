@@ -1,6 +1,6 @@
 import type { Transaction } from '@finance-tracker/shared';
 import { ArrowLeftRight, Download, Plus, Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { useToast } from '@/components/toast/useToast';
 import { Button } from '@/components/ui/Button';
@@ -23,6 +23,7 @@ import { TransactionFilters } from '@/features/transactions/TransactionFilters';
 import { TransactionForm } from '@/features/transactions/TransactionForm';
 import { TransactionTable } from '@/features/transactions/TransactionTable';
 import { useTransactionQuery } from '@/features/transactions/useTransactionQuery';
+import { useHotkey } from '@/hooks/useHotkey';
 import { downloadFile } from '@/lib/api/client';
 
 type Editing = { mode: 'create' } | { mode: 'edit'; transaction: Transaction } | null;
@@ -45,6 +46,12 @@ export function TransactionsPage() {
   const [confirmBulk, setConfirmBulk] = useState(false);
 
   const transactions = data?.items ?? [];
+
+  // Press N to add a transaction.
+  useHotkey(
+    'n',
+    useCallback(() => setEditing({ mode: 'create' }), []),
+  );
 
   const toggle = (id: string) =>
     setSelected((current) => {
@@ -84,6 +91,9 @@ export function TransactionsPage() {
             <Button onClick={() => setEditing({ mode: 'create' })}>
               <Plus className="size-4" />
               Add transaction
+              <kbd className="ml-1 hidden rounded border border-white/30 px-1 text-xs sm:inline">
+                N
+              </kbd>
             </Button>
           </>
         }
