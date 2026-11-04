@@ -1,4 +1,5 @@
 export * from './constants/currencies';
+export * from './constants/categories';
 export * from './utils/money';
 export * from './utils/dates';
 export * from './schemas/common';
