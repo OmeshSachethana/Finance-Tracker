@@ -3,6 +3,7 @@ import { Router } from 'express';
 import { unauthorized } from '../../lib/errors.ts';
 import { prisma } from '../../lib/prisma.ts';
 import { authenticate } from '../../middleware/authenticate.ts';
+import { authRateLimit } from '../../middleware/rateLimit.ts';
 import { validateBody } from '../../middleware/validate.ts';
 import { toUserDto } from './auth.serializer.ts';
 import { loginUser, registerUser } from './auth.service.ts';
@@ -11,14 +12,14 @@ import { createSession, revokeSession, rotateSession } from './session.service.t
 
 export const authRouter = Router();
 
-authRouter.post('/register', validateBody(registerSchema), async (req, res) => {
+authRouter.post('/register', authRateLimit, validateBody(registerSchema), async (req, res) => {
   const user = await registerUser(req.body);
   const session = await createSession(user);
   setRefreshCookie(res, session.refreshToken, session.refreshExpiresAt);
   res.status(201).json({ user: toUserDto(user), accessToken: session.accessToken });
 });
 
-authRouter.post('/login', validateBody(loginSchema), async (req, res) => {
+authRouter.post('/login', authRateLimit, validateBody(loginSchema), async (req, res) => {
   const user = await loginUser(req.body);
   const session = await createSession(user);
   setRefreshCookie(res, session.refreshToken, session.refreshExpiresAt);
