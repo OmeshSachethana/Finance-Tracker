@@ -8,6 +8,7 @@ import { logger } from './lib/logger.ts';
 import { errorHandler } from './middleware/errorHandler.ts';
 import { notFoundHandler } from './middleware/notFound.ts';
 import { accountsRouter } from './modules/accounts/accounts.routes.ts';
+import { adminRouter } from './modules/admin/admin.routes.ts';
 import { authRouter } from './modules/auth/auth.routes.ts';
 import { budgetsRouter } from './modules/budgets/budgets.routes.ts';
 import { categoriesRouter } from './modules/categories/categories.routes.ts';
@@ -41,6 +42,7 @@ export function createApp() {
   app.use('/api/budgets', budgetsRouter);
   app.use('/api/goals', goalsRouter);
   app.use('/api/recurring', recurringRouter);
+  app.use('/api/admin', adminRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
