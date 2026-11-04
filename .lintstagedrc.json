@@ -1,3 +1,4 @@
 {
+  "frontend/**/*.{ts,tsx}": "eslint --fix --config frontend/eslint.config.js",
   "*.{ts,tsx,js,json,css,md,yml,html}": "prettier --write"
 }
