@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router';
+import { Outlet, ScrollRestoration } from 'react-router';
 import { MobileNav } from './MobileNav';
 import { Sidebar } from './Sidebar';
 import { ThemeToggle } from './ThemeToggle';
@@ -22,6 +22,7 @@ export function AppLayout() {
           </div>
         </main>
       </div>
+      <ScrollRestoration />
     </div>
   );
 }
