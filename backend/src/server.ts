@@ -1,9 +1,11 @@
 import { createApp } from './app.ts';
 import { env } from './config/env.ts';
+import { startScheduler } from './jobs/scheduler.ts';
 import { logger } from './lib/logger.ts';
 import { prisma } from './lib/prisma.ts';
 
 const app = createApp();
+const stopScheduler = startScheduler();
 
 const server = app.listen(env.PORT, () => {
   logger.info(`API listening on http://localhost:${env.PORT}`);
@@ -11,6 +13,7 @@ const server = app.listen(env.PORT, () => {
 
 function shutdown(signal: string) {
   logger.info(`${signal} received, shutting down`);
+  stopScheduler();
   server.close(async () => {
     await prisma.$disconnect();
     process.exit(0);
