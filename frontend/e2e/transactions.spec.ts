@@ -46,3 +46,11 @@ test('filters by search text', async ({ page }) => {
   await expect(page).toHaveURL(/search=salary/);
   await expect(page.getByRole('cell', { name: 'Rent' })).toHaveCount(0);
 });
+
+test('opens the add form with the N shortcut', async ({ page }) => {
+  await login(page);
+  await page.goto('/transactions');
+  await expect(page).toHaveTitle('Transactions · Finance Tracker');
+  await page.keyboard.press('n');
+  await expect(page.getByRole('dialog', { name: 'Add transaction' })).toBeVisible();
+});
