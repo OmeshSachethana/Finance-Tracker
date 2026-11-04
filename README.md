@@ -125,3 +125,7 @@ docker compose --env-file .env.prod -f docker-compose.prod.yml up --build -d
 ```
 
 The app is then available on <http://localhost:8080>. In production, serve it over HTTPS: the refresh cookie is marked `Secure`.
+
+## License
+
+[MIT](LICENSE) © Omesh Sachethana
