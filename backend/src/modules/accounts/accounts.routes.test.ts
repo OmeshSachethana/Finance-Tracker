@@ -31,3 +31,28 @@ describe('POST /api/accounts', () => {
     expect(res.body).toMatchObject({ name: 'Main Bank', balance: 250000, archived: false });
   });
 });
+
+describe('PATCH /api/accounts/:id', () => {
+  it('archives an account', async () => {
+    const { Authorization } = await authHeader(app);
+    const list = await request(app).get('/api/accounts').set({ Authorization });
+    const res = await request(app)
+      .patch(`/api/accounts/${list.body.items[0].id}`)
+      .set({ Authorization })
+      .send({ archived: true });
+    expect(res.body.archived).toBe(true);
+  });
+
+  it("cannot edit another user's account", async () => {
+    const owner = await authHeader(app);
+    const other = await authHeader(app);
+    const list = await request(app)
+      .get('/api/accounts')
+      .set({ Authorization: owner.Authorization });
+    const res = await request(app)
+      .patch(`/api/accounts/${list.body.items[0].id}`)
+      .set({ Authorization: other.Authorization })
+      .send({ name: 'Mine now' });
+    expect(res.status).toBe(404);
+  });
+});
