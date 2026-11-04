@@ -1,4 +1,4 @@
-import type { User as UserDto } from '@finance-tracker/shared';
+import type { CurrencyCode, User as UserDto } from '@finance-tracker/shared';
 import type { User } from '../../generated/prisma/client.ts';
 
 export function toUserDto(user: User): UserDto {
@@ -7,7 +7,7 @@ export function toUserDto(user: User): UserDto {
     name: user.name,
     email: user.email,
     role: user.role === 'ADMIN' ? 'admin' : 'user',
-    currency: user.currency,
+    currency: user.currency as CurrencyCode,
     createdAt: user.createdAt.toISOString(),
   };
 }

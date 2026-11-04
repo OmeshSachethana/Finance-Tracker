@@ -1,3 +1,5 @@
+import type { CurrencyCode } from '../constants/currencies.ts';
+import { currencySchema } from './common.ts';
 import { z } from 'zod';
 
 export const emailSchema = z.string().trim().toLowerCase().pipe(z.email('Enter a valid email'));
@@ -31,6 +33,14 @@ export interface User {
   name: string;
   email: string;
   role: UserRole;
-  currency: string;
+  currency: CurrencyCode;
   createdAt: string;
 }
+
+export const updateProfileSchema = z
+  .object({
+    name: z.string().trim().min(1, 'Name is required').max(60),
+    currency: currencySchema,
+  })
+  .partial();
+export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
