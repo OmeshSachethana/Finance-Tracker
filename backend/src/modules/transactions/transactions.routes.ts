@@ -1,4 +1,5 @@
 import {
+  bulkDeleteSchema,
   createTransactionSchema,
   paginationSchema,
   transactionFiltersSchema,
@@ -12,6 +13,7 @@ import { toTransactionDto } from './transactions.serializer.ts';
 import {
   createTransaction,
   deleteTransaction,
+  deleteTransactions,
   getTransaction,
   listTransactions,
   updateTransaction,
@@ -33,6 +35,11 @@ const listQuerySchema = paginationSchema
 transactionsRouter.get('/', validateQuery(listQuerySchema), async (req, res) => {
   const result = await listTransactions(req.user!.sub, res.locals.query);
   res.json({ ...result, items: result.items.map(toTransactionDto) });
+});
+
+transactionsRouter.post('/bulk-delete', validateBody(bulkDeleteSchema), async (req, res) => {
+  const deleted = await deleteTransactions(req.user!.sub, req.body.ids);
+  res.json({ deleted });
 });
 
 transactionsRouter.get('/:id', async (req, res) => {

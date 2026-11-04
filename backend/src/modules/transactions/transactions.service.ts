@@ -75,3 +75,9 @@ export async function deleteTransaction(userId: string, id: string) {
   await getTransaction(userId, id);
   await prisma.transaction.delete({ where: { id } });
 }
+
+/** Deletes several of the user's transactions and returns how many were removed. */
+export async function deleteTransactions(userId: string, ids: string[]) {
+  const { count } = await prisma.transaction.deleteMany({ where: { userId, id: { in: ids } } });
+  return count;
+}

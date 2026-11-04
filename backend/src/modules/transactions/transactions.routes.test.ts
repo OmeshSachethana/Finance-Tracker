@@ -199,3 +199,19 @@ describe('DELETE /api/transactions/:id', () => {
     expect(after.body.total).toBe(1);
   });
 });
+
+describe('POST /api/transactions/bulk-delete', () => {
+  it('deletes only the given transactions owned by the user', async () => {
+    const { headers } = await seed(3);
+    const other = await seed(1);
+    const mine = await request(app).get('/api/transactions').set(headers);
+    const theirs = await request(app).get('/api/transactions').set(other.headers);
+    const res = await request(app)
+      .post('/api/transactions/bulk-delete')
+      .set(headers)
+      .send({ ids: [mine.body.items[0].id, mine.body.items[1].id, theirs.body.items[0].id] });
+    expect(res.body.deleted).toBe(2);
+    const theirsAfter = await request(app).get('/api/transactions').set(other.headers);
+    expect(theirsAfter.body.total).toBe(1);
+  });
+});
