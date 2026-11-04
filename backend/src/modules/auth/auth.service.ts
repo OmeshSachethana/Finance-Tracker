@@ -32,5 +32,5 @@ export async function loginUser(input: LoginInput) {
   if (!user || !(await verifyPassword(input.password, user.passwordHash))) {
     throw unauthorized('Invalid email or password');
   }
-  return user;
+  return prisma.user.update({ where: { id: user.id }, data: { lastLoginAt: new Date() } });
 }
