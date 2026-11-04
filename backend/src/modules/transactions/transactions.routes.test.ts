@@ -79,3 +79,11 @@ describe('GET /api/transactions', () => {
     expect(res.body.total).toBe(0);
   });
 });
+
+describe('GET /api/transactions filters', () => {
+  it('filters by type', async () => {
+    const { headers } = await seed(6);
+    const res = await request(app).get('/api/transactions?type=income').set(headers);
+    expect(res.body.total).toBe(2);
+  });
+});

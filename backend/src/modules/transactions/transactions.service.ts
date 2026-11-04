@@ -1,9 +1,14 @@
-import type { CreateTransactionInput, Pagination } from '@finance-tracker/shared';
+import type {
+  CreateTransactionInput,
+  Pagination,
+  TransactionFilters,
+} from '@finance-tracker/shared';
 import { badRequest } from '../../lib/errors.ts';
 import { toDbDate, toDbTransactionType } from '../../lib/mappers.ts';
 import { prisma } from '../../lib/prisma.ts';
 import { getAccount } from '../accounts/accounts.service.ts';
 import { getCategory } from '../categories/categories.service.ts';
+import { buildTransactionWhere } from './transactions.filters.ts';
 
 type ParsedCreateInput = Required<Pick<CreateTransactionInput, 'tags'>> & CreateTransactionInput;
 
@@ -22,8 +27,11 @@ export async function createTransaction(userId: string, input: ParsedCreateInput
   });
 }
 
-export async function listTransactions(userId: string, { page, pageSize }: Pagination) {
-  const where = { userId };
+export async function listTransactions(
+  userId: string,
+  { page, pageSize, ...filters }: Pagination & TransactionFilters,
+) {
+  const where = buildTransactionWhere(userId, filters);
   const [items, total] = await Promise.all([
     prisma.transaction.findMany({
       where,
