@@ -15,7 +15,8 @@
     "moduleDetection": "force",
     "noEmit": true,
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+    "noUnusedLocals": true
   },
   "include": [
     "vite.config.ts"
