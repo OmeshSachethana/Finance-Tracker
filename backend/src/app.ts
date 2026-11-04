@@ -10,6 +10,7 @@ import { notFoundHandler } from './middleware/notFound.ts';
 import { accountsRouter } from './modules/accounts/accounts.routes.ts';
 import { authRouter } from './modules/auth/auth.routes.ts';
 import { categoriesRouter } from './modules/categories/categories.routes.ts';
+import { statsRouter } from './modules/stats/stats.routes.ts';
 import { transactionsRouter } from './modules/transactions/transactions.routes.ts';
 import { healthRouter } from './routes/health.ts';
 
@@ -29,6 +30,7 @@ export function createApp() {
   app.use('/api/categories', categoriesRouter);
   app.use('/api/accounts', accountsRouter);
   app.use('/api/transactions', transactionsRouter);
+  app.use('/api/stats', statsRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
