@@ -6,7 +6,7 @@ export default defineConfig({
     environment: 'node',
     env: {
       NODE_ENV: 'test',
-      DATABASE_URL: 'postgresql://finance:finance@localhost:5432/finance_tracker_test',
+      DATABASE_URL: 'postgresql://finance:finance@localhost:5440/finance_tracker_test',
     },
   },
 });
