@@ -4,6 +4,7 @@ import { AuthLayout } from '@/components/layout/AuthLayout';
 import { RedirectIfAuthenticated } from '@/features/auth/RedirectIfAuthenticated';
 import { RequireAuth } from '@/features/auth/RequireAuth';
 import { BudgetsPage } from '@/pages/BudgetsPage';
+import { CategoriesPage } from '@/pages/CategoriesPage';
 import { DashboardPage } from '@/pages/DashboardPage';
 import { GoalsPage } from '@/pages/GoalsPage';
 import { LoginPage } from '@/pages/LoginPage';
@@ -36,6 +37,7 @@ export const routes = [
           { path: 'budgets', element: <BudgetsPage /> },
           { path: 'goals', element: <GoalsPage /> },
           { path: 'recurring', element: <RecurringPage /> },
+          { path: 'categories', element: <CategoriesPage /> },
           { path: '*', element: <NotFoundPage /> },
         ],
       },
