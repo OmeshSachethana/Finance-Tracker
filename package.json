@@ -6,8 +6,7 @@
   "license": "MIT",
   "author": "Omesh Sachethana",
   "workspaces": [
-    "frontend",
-    "backend"
+    "frontend"
   ],
   "engines": {
     "node": ">=24"
