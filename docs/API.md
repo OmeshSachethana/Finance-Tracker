@@ -108,3 +108,26 @@ List responses look like:
 | PATCH  | `/recurring/:id`           | `amount?`, `description?`, `endDate?`, `active?`                                                 |
 | DELETE | `/recurring/:id`           | `204`                                                                                            |
 | POST   | `/recurring/run`           | Creates any due transactions now, returns `{ created }`                                          |
+
+## Stats
+
+| Method | Path                              | Returns                                                                           |
+| ------ | --------------------------------- | --------------------------------------------------------------------------------- |
+| GET    | `/stats/summary?from&to`          | `{ income, expense, balance, savingsRate, count }`                                |
+| GET    | `/stats/by-category?from&to&type` | `{ items: [{ categoryId, total, count }] }`, largest first                        |
+| GET    | `/stats/monthly?months=6`         | `{ items: [{ month, income, expense }] }` for recent months, including empty ones |
+
+## Admin
+
+Requires the admin role.
+
+| Method | Path                    | Notes                                                          |
+| ------ | ----------------------- | -------------------------------------------------------------- |
+| GET    | `/admin/stats`          | `{ users, newUsers, activeUsers, transactions }`               |
+| GET    | `/admin/users`          | Paginated; `search` matches name or email                      |
+| PATCH  | `/admin/users/:id/role` | `{ role: 'user' \| 'admin' }`; you cannot change your own role |
+| DELETE | `/admin/users/:id`      | `204`; you cannot delete yourself here                         |
+
+## Health
+
+`GET /health` returns `{ status: "ok", uptime }` and needs no token.
