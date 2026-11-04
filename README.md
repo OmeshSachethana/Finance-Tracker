@@ -114,3 +114,14 @@ Run these from the repository root.
 - **End-to-end**: Playwright drives a real browser through sign-in, every page and the main create, edit and delete flows, including dark mode and a phone-sized screen.
 
 CI runs formatting, lint, type checks, all tests, the production build, the end-to-end suite and both Docker image builds on every push.
+
+## Running in production
+
+The repository includes a production-like Docker stack: PostgreSQL, a one-off migration container, the API, and nginx serving the built app and proxying `/api`.
+
+```bash
+cp .env.prod.example .env.prod   # then set real secrets
+docker compose --env-file .env.prod -f docker-compose.prod.yml up --build -d
+```
+
+The app is then available on <http://localhost:8080>. In production, serve it over HTTPS: the refresh cookie is marked `Secure`.
