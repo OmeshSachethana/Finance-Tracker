@@ -41,7 +41,7 @@ function SortHeader({ field, label, align }: { field: SortField; label: string; 
             page: undefined,
           })
         }
-        className="inline-flex items-center gap-1 font-medium hover:text-slate-900 dark:hover:text-slate-100"
+        className="inline-flex items-center gap-1 font-medium uppercase hover:text-slate-900 dark:hover:text-slate-100"
       >
         {label}
         {active && <Icon className="size-3.5" aria-hidden />}
