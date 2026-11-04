@@ -1,11 +1,19 @@
 import {
   calculateSavingsRate,
   calculateTotals,
+  lastMonthKeys,
+  totalsByMonth,
   type CategoryBreakdownItem,
   type DateRange,
+  type MonthlyTrendItem,
   type TransactionType,
 } from '@finance-tracker/shared';
-import { toDbDate, toDbTransactionType } from '../../lib/mappers.ts';
+import {
+  fromDbDate,
+  fromDbTransactionType,
+  toDbDate,
+  toDbTransactionType,
+} from '../../lib/mappers.ts';
 import { prisma } from '../../lib/prisma.ts';
 
 /** Income, expenses, balance and savings rate for a date range. */
@@ -46,4 +54,30 @@ export async function getCategoryBreakdown(
   return groups
     .map((g) => ({ categoryId: g.categoryId, total: g._sum.amount ?? 0, count: g._count }))
     .sort((a, b) => b.total - a.total);
+}
+
+/** Income and expenses for each of the last `months` months, including empty months. */
+export async function getMonthlyTrend(
+  userId: string,
+  months: number,
+  now = new Date(),
+): Promise<MonthlyTrendItem[]> {
+  const keys = lastMonthKeys(months, now);
+  const from = toDbDate(`${keys[0]}-01`);
+  const transactions = await prisma.transaction.findMany({
+    where: { userId, date: { gte: from } },
+    select: { type: true, amount: true, date: true },
+  });
+
+  const byMonth = totalsByMonth(
+    transactions.map((t) => ({
+      type: fromDbTransactionType(t.type),
+      amount: t.amount,
+      date: fromDbDate(t.date),
+    })),
+  );
+  return keys.map((month) => {
+    const totals = byMonth.get(month);
+    return { month, income: totals?.income ?? 0, expense: totals?.expense ?? 0 };
+  });
 }
