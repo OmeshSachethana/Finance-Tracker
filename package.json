@@ -15,6 +15,7 @@
     "prettier": "^3.9.10"
   },
   "scripts": {
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   }
 }
