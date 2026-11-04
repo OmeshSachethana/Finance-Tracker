@@ -16,3 +16,7 @@ A full-stack personal finance app for tracking income and expenses, setting mont
 - **Settings**: display currency, profile, password change and account deletion.
 - **Admin**: platform statistics, user search, role changes and user removal.
 - **Polish**: dark mode, mobile layout, keyboard-friendly dialogs, reduced-motion support and accessible charts with a table view.
+
+| Dark mode                                                      | Mobile                                                         |
+| -------------------------------------------------------------- | -------------------------------------------------------------- |
+| ![Dashboard in dark mode](docs/screenshots/dashboard-dark.png) | ![Dashboard on a phone](docs/screenshots/dashboard-mobile.png) |
