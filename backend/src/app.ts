@@ -7,6 +7,7 @@ import { env } from './config/env.ts';
 import { logger } from './lib/logger.ts';
 import { errorHandler } from './middleware/errorHandler.ts';
 import { notFoundHandler } from './middleware/notFound.ts';
+import { accountsRouter } from './modules/accounts/accounts.routes.ts';
 import { authRouter } from './modules/auth/auth.routes.ts';
 import { categoriesRouter } from './modules/categories/categories.routes.ts';
 import { healthRouter } from './routes/health.ts';
@@ -25,6 +26,7 @@ export function createApp() {
   app.use('/api/health', healthRouter);
   app.use('/api/auth', authRouter);
   app.use('/api/categories', categoriesRouter);
+  app.use('/api/accounts', accountsRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
