@@ -16,3 +16,18 @@ describe('GET /api/accounts', () => {
     ]);
   });
 });
+
+describe('POST /api/accounts', () => {
+  it('creates an account with its opening balance', async () => {
+    const { Authorization } = await authHeader(app);
+    const res = await request(app).post('/api/accounts').set({ Authorization }).send({
+      name: 'Main Bank',
+      type: 'bank',
+      currency: 'USD',
+      openingBalance: 250000,
+      color: '#3b82f6',
+    });
+    expect(res.status).toBe(201);
+    expect(res.body).toMatchObject({ name: 'Main Bank', balance: 250000, archived: false });
+  });
+});
