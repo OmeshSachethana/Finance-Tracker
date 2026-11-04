@@ -14,17 +14,17 @@ test('creates, pauses and deletes a recurring rule', async ({ page }) => {
   await form.getByLabel('Starts').fill('2099-01-15');
   await form.getByRole('button', { name: 'Create rule' }).click();
 
-  await expect(page.getByText(description)).toBeVisible();
-  await expect(page.getByText(/Next on 15 Jan 2099/)).toBeVisible();
+  const row = page.getByRole('listitem').filter({ hasText: description });
+  await expect(row).toContainText('Next on 15 Jan 2099');
   await snap(page, 'recurring');
 
   await page.getByRole('button', { name: `Pause ${description}` }).click();
-  await expect(page.getByText('Paused')).toBeVisible();
+  await expect(row).toContainText('Paused');
 
   await page.getByRole('button', { name: `Delete ${description}` }).click();
   await page
     .getByRole('dialog', { name: 'Delete recurring rule?' })
     .getByRole('button', { name: 'Delete' })
     .click();
-  await expect(page.getByText(description)).toHaveCount(0);
+  await expect(row).toHaveCount(0);
 });
