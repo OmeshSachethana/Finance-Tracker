@@ -1,4 +1,4 @@
-import type { CreateAccountInput } from '@finance-tracker/shared';
+import type { CreateAccountInput, UpdateAccountInput } from '@finance-tracker/shared';
 import { notFound } from '../../lib/errors.ts';
 import { toDbAccountType } from '../../lib/mappers.ts';
 import { prisma } from '../../lib/prisma.ts';
@@ -34,5 +34,13 @@ export async function getAccount(userId: string, id: string) {
 export function createAccount(userId: string, input: CreateAccountInput) {
   return prisma.account.create({
     data: { ...input, type: toDbAccountType(input.type), userId },
+  });
+}
+
+export async function updateAccount(userId: string, id: string, input: UpdateAccountInput) {
+  await getAccount(userId, id);
+  return prisma.account.update({
+    where: { id },
+    data: { ...input, type: input.type ? toDbAccountType(input.type) : undefined },
   });
 }
