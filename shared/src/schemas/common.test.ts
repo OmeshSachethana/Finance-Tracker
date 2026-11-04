@@ -31,3 +31,9 @@ describe('currencySchema', () => {
     expect(currencySchema.safeParse('XYZ').success).toBe(false);
   });
 });
+
+describe('amountSchema limits', () => {
+  it('rejects amounts that do not fit the database column', () => {
+    expect(amountSchema.safeParse(2_147_483_648).success).toBe(false);
+  });
+});

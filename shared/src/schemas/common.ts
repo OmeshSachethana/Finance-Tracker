@@ -11,9 +11,9 @@ export const hexColorSchema = z
 
 export const currencySchema = z.enum(CURRENCIES);
 
-/** Positive amount in integer minor units (e.g. cents). */
+/** Positive amount in integer minor units (e.g. cents). Capped to fit a 32-bit column. */
 export const amountSchema = z
   .number()
   .int('Amount must be in whole minor units')
   .positive('Amount must be greater than zero')
-  .max(100_000_000_000, 'Amount is too large');
+  .max(2_000_000_000, 'Amount is too large');
