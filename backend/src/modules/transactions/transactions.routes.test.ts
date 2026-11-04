@@ -145,3 +145,22 @@ describe('GET /api/transactions sorting', () => {
     expect(res.status).toBe(400);
   });
 });
+
+describe('GET /api/transactions/:id', () => {
+  it('returns a single transaction', async () => {
+    const { headers } = await seed(1);
+    const list = await request(app).get('/api/transactions').set(headers);
+    const res = await request(app).get(`/api/transactions/${list.body.items[0].id}`).set(headers);
+    expect(res.body.description).toBe('Lunch 1');
+  });
+
+  it("returns 404 for another user's transaction", async () => {
+    const { headers } = await seed(1);
+    const list = await request(app).get('/api/transactions').set(headers);
+    const other = await userWithDefaults(app);
+    const res = await request(app)
+      .get(`/api/transactions/${list.body.items[0].id}`)
+      .set(other.headers);
+    expect(res.status).toBe(404);
+  });
+});

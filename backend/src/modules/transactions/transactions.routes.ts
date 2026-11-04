@@ -8,7 +8,7 @@ import { Router } from 'express';
 import { authenticate } from '../../middleware/authenticate.ts';
 import { validateBody, validateQuery } from '../../middleware/validate.ts';
 import { toTransactionDto } from './transactions.serializer.ts';
-import { createTransaction, listTransactions } from './transactions.service.ts';
+import { createTransaction, getTransaction, listTransactions } from './transactions.service.ts';
 
 export const transactionsRouter = Router();
 
@@ -26,4 +26,9 @@ const listQuerySchema = paginationSchema
 transactionsRouter.get('/', validateQuery(listQuerySchema), async (req, res) => {
   const result = await listTransactions(req.user!.sub, res.locals.query);
   res.json({ ...result, items: result.items.map(toTransactionDto) });
+});
+
+transactionsRouter.get('/:id', async (req, res) => {
+  const transaction = await getTransaction(req.user!.sub, req.params.id as string);
+  res.json(toTransactionDto(transaction));
 });

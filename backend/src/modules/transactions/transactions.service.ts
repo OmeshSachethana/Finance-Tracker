@@ -4,7 +4,7 @@ import type {
   TransactionFilters,
   TransactionSort,
 } from '@finance-tracker/shared';
-import { badRequest } from '../../lib/errors.ts';
+import { badRequest, notFound } from '../../lib/errors.ts';
 import { toDbDate, toDbTransactionType } from '../../lib/mappers.ts';
 import { prisma } from '../../lib/prisma.ts';
 import { getAccount } from '../accounts/accounts.service.ts';
@@ -43,4 +43,10 @@ export async function listTransactions(
     prisma.transaction.count({ where }),
   ]);
   return { items, total, page, pageSize, totalPages: Math.max(1, Math.ceil(total / pageSize)) };
+}
+
+export async function getTransaction(userId: string, id: string) {
+  const transaction = await prisma.transaction.findFirst({ where: { id, userId } });
+  if (!transaction) throw notFound('Transaction not found');
+  return transaction;
 }
