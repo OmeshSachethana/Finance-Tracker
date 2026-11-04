@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 interface PageHeaderProps {
   title: string;
@@ -7,6 +8,7 @@ interface PageHeaderProps {
 }
 
 export function PageHeader({ title, description, actions }: PageHeaderProps) {
+  useDocumentTitle(title);
   return (
     <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
       <div>
