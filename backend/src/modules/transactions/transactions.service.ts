@@ -3,6 +3,7 @@ import type {
   Pagination,
   TransactionFilters,
   TransactionSort,
+  UpdateTransactionInput,
 } from '@finance-tracker/shared';
 import { badRequest, notFound } from '../../lib/errors.ts';
 import { toDbDate, toDbTransactionType } from '../../lib/mappers.ts';
@@ -49,4 +50,23 @@ export async function getTransaction(userId: string, id: string) {
   const transaction = await prisma.transaction.findFirst({ where: { id, userId } });
   if (!transaction) throw notFound('Transaction not found');
   return transaction;
+}
+
+export async function updateTransaction(userId: string, id: string, input: UpdateTransactionInput) {
+  const current = await getTransaction(userId, id);
+  const categoryId = input.categoryId ?? current.categoryId;
+  const type = input.type ? toDbTransactionType(input.type) : current.type;
+
+  const [category] = await Promise.all([
+    getCategory(userId, categoryId),
+    input.accountId ? getAccount(userId, input.accountId) : null,
+  ]);
+  if (category.type !== type) {
+    throw badRequest('Category type does not match the transaction type');
+  }
+
+  return prisma.transaction.update({
+    where: { id },
+    data: { ...input, type, date: input.date ? toDbDate(input.date) : undefined },
+  });
 }

@@ -164,3 +164,25 @@ describe('GET /api/transactions/:id', () => {
     expect(res.status).toBe(404);
   });
 });
+
+describe('PATCH /api/transactions/:id', () => {
+  it('updates fields', async () => {
+    const { headers } = await seed(1);
+    const list = await request(app).get('/api/transactions').set(headers);
+    const res = await request(app)
+      .patch(`/api/transactions/${list.body.items[0].id}`)
+      .set(headers)
+      .send({ amount: 9999, notes: 'Split with a friend' });
+    expect(res.body).toMatchObject({ amount: 9999, notes: 'Split with a friend' });
+  });
+
+  it('rejects switching type without a matching category', async () => {
+    const { headers } = await seed(1);
+    const list = await request(app).get('/api/transactions').set(headers);
+    const res = await request(app)
+      .patch(`/api/transactions/${list.body.items[0].id}`)
+      .set(headers)
+      .send({ type: 'income' });
+    expect(res.status).toBe(400);
+  });
+});

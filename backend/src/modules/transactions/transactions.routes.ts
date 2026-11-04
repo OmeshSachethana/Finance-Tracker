@@ -3,12 +3,18 @@ import {
   paginationSchema,
   transactionFiltersSchema,
   transactionSortSchema,
+  updateTransactionSchema,
 } from '@finance-tracker/shared';
 import { Router } from 'express';
 import { authenticate } from '../../middleware/authenticate.ts';
 import { validateBody, validateQuery } from '../../middleware/validate.ts';
 import { toTransactionDto } from './transactions.serializer.ts';
-import { createTransaction, getTransaction, listTransactions } from './transactions.service.ts';
+import {
+  createTransaction,
+  getTransaction,
+  listTransactions,
+  updateTransaction,
+} from './transactions.service.ts';
 
 export const transactionsRouter = Router();
 
@@ -30,5 +36,10 @@ transactionsRouter.get('/', validateQuery(listQuerySchema), async (req, res) => 
 
 transactionsRouter.get('/:id', async (req, res) => {
   const transaction = await getTransaction(req.user!.sub, req.params.id as string);
+  res.json(toTransactionDto(transaction));
+});
+
+transactionsRouter.patch('/:id', validateBody(updateTransactionSchema), async (req, res) => {
+  const transaction = await updateTransaction(req.user!.sub, req.params.id as string, req.body);
   res.json(toTransactionDto(transaction));
 });
