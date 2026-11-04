@@ -4,7 +4,8 @@ import { Card } from '@/components/ui/Card';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { useMoney } from '@/hooks/useMoney';
 import type { BudgetWithProgress } from './api';
-import { BudgetStatusBadge, statusBarTone } from './BudgetStatus';
+import { BudgetStatusBadge } from './BudgetStatus';
+import { statusBarTone } from './statusTone';
 
 interface BudgetCardProps {
   budget: BudgetWithProgress;

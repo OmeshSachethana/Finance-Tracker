@@ -18,5 +18,3 @@ export function BudgetStatusBadge({ status }: { status: Status }) {
     </Badge>
   );
 }
-
-export const statusBarTone = { ok: 'success', warning: 'warning', exceeded: 'danger' } as const;
