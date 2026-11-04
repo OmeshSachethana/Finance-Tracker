@@ -21,3 +21,9 @@ describe('toCsv', () => {
     expect(toCsv(['a', 'b'], [[1, 'x']])).toBe('a,b\n1,x');
   });
 });
+
+describe('csvEscape numbers', () => {
+  it('keeps negative numbers intact', () => {
+    expect(csvEscape(-12.5)).toBe('-12.5');
+  });
+});

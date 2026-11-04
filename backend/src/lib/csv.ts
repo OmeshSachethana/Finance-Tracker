@@ -3,7 +3,7 @@ export function csvEscape(value: string | number | null | undefined): string {
   if (value === null || value === undefined) return '';
   let text = String(value);
   // Prevent spreadsheet formula injection.
-  if (/^[=+\-@]/.test(text)) text = `'${text}`;
+  if (typeof value === 'string' && /^[=+\-@]/.test(text)) text = `'${text}`;
   return /[",\n\r]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
 }
 
