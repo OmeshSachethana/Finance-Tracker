@@ -75,3 +75,16 @@ List responses look like:
 ```json
 { "items": [], "page": 1, "pageSize": 20, "total": 37, "totalPages": 2 }
 ```
+
+## Categories and accounts
+
+| Method | Path              | Notes                                                                   |
+| ------ | ----------------- | ----------------------------------------------------------------------- |
+| GET    | `/categories`     | All of the user's categories                                            |
+| POST   | `/categories`     | `name`, `type`, `color` (`#rrggbb`), `icon`                             |
+| PATCH  | `/categories/:id` | `name?`, `color?`, `icon?`                                              |
+| DELETE | `/categories/:id` | `409` if it has transactions; add `?reassignTo=<id>` to move them first |
+| GET    | `/accounts`       | Accounts with a computed `balance`                                      |
+| POST   | `/accounts`       | `name`, `type`, `currency`, `openingBalance`, `color`                   |
+| PATCH  | `/accounts/:id`   | Any create field, plus `archived`                                       |
+| DELETE | `/accounts/:id`   | `409` if it has transactions; archive it instead                        |
