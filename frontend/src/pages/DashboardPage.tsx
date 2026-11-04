@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { MonthPicker } from '@/components/ui/MonthPicker';
 import { useAuth } from '@/features/auth/useAuth';
+import { BudgetOverview } from '@/features/dashboard/BudgetOverview';
 import { MonthlyTrendChart } from '@/features/dashboard/MonthlyTrendChart';
 import { RecentTransactions } from '@/features/dashboard/RecentTransactions';
 import { SpendingByCategory } from '@/features/dashboard/SpendingByCategory';
@@ -65,8 +66,13 @@ export function DashboardPage() {
         </div>
       </div>
 
-      <div className="mt-6">
-        <RecentTransactions />
+      <div className="mt-6 grid items-start gap-6 lg:grid-cols-5">
+        <div className="lg:col-span-3">
+          <RecentTransactions />
+        </div>
+        <div className="lg:col-span-2">
+          <BudgetOverview month={month} />
+        </div>
       </div>
     </>
   );
