@@ -14,3 +14,16 @@ export function validateBody(schema: z.ZodType): RequestHandler {
     next();
   };
 }
+
+/** Validates query params and stores the parsed result on `res.locals.query`. */
+export function validateQuery(schema: z.ZodType): RequestHandler {
+  return (req, res, next) => {
+    const result = schema.safeParse(req.query);
+    if (!result.success) {
+      next(badRequest('Invalid query parameters', z.flattenError(result.error).fieldErrors));
+      return;
+    }
+    res.locals.query = result.data;
+    next();
+  };
+}
