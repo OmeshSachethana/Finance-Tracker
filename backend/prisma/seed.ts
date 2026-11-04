@@ -1,4 +1,5 @@
 import { DEFAULT_CATEGORIES } from '@finance-tracker/shared';
+import { toDbDate } from '../src/lib/mappers.ts';
 import { hashPassword } from '../src/lib/password.ts';
 import { prisma } from '../src/lib/prisma.ts';
 import { generateSampleTransactions } from './seed-data.ts';
@@ -47,7 +48,7 @@ async function seedDemoData(userId: string) {
       type: t.type,
       amount: t.amount,
       description: t.description,
-      date: new Date(),
+      date: toDbDate(t.date),
     })),
   });
 }
