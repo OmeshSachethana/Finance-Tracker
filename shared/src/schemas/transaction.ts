@@ -14,3 +14,9 @@ export const transactionSchema = z.object({
   accountId: idSchema,
 });
 export type Transaction = z.infer<typeof transactionSchema>;
+
+export const createTransactionSchema = transactionSchema.omit({ id: true });
+export type CreateTransactionInput = z.input<typeof createTransactionSchema>;
+
+export const updateTransactionSchema = createTransactionSchema.partial();
+export type UpdateTransactionInput = z.input<typeof updateTransactionSchema>;
