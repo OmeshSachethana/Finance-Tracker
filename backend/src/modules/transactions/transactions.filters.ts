@@ -19,5 +19,11 @@ export function buildTransactionWhere(
             lte: filters.to ? toDbDate(filters.to) : undefined,
           }
         : undefined,
+    OR: filters.search
+      ? [
+          { description: { contains: filters.search, mode: 'insensitive' } },
+          { notes: { contains: filters.search, mode: 'insensitive' } },
+        ]
+      : undefined,
   };
 }

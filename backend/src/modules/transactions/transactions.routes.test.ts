@@ -106,4 +106,10 @@ describe('GET /api/transactions filters', () => {
       .set(headers);
     expect(res.body.total).toBe(3);
   });
+
+  it('searches descriptions case-insensitively', async () => {
+    const { headers } = await seed(6);
+    const res = await request(app).get('/api/transactions?search=coffee').set(headers);
+    expect(res.body.total).toBe(3);
+  });
 });
