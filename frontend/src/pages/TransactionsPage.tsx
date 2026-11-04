@@ -88,10 +88,13 @@ export function TransactionsPage() {
               <Download className="size-4" />
               Export CSV
             </Button>
-            <Button onClick={() => setEditing({ mode: 'create' })}>
+            <Button onClick={() => setEditing({ mode: 'create' })} aria-keyshortcuts="n">
               <Plus className="size-4" />
               Add transaction
-              <kbd className="ml-1 hidden rounded border border-white/30 px-1 text-xs sm:inline">
+              <kbd
+                aria-hidden
+                className="ml-1 hidden rounded border border-white/30 px-1 text-xs sm:inline"
+              >
                 N
               </kbd>
             </Button>
