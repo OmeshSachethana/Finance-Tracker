@@ -30,3 +30,32 @@ A full-stack personal finance app for tracking income and expenses, setting mont
 | Shared   | A `shared` workspace with validation schemas, types and money/date helpers used by both sides       |
 | Testing  | Vitest, Testing Library, Supertest against a real database, Playwright end-to-end tests             |
 | Tooling  | ESLint, Prettier, Husky, lint-staged, GitHub Actions, Docker                                        |
+
+## Getting started
+
+You need **Node.js 24**, **npm 11** and **Docker** (for PostgreSQL).
+
+```bash
+# 1. Install dependencies (also generates the Prisma client)
+npm install
+
+# 2. Start PostgreSQL on localhost:5440
+docker compose up -d
+
+# 3. Create the backend environment file
+cp backend/.env.example backend/.env
+
+# 4. Create the tables and load demo data
+npm run db:deploy -w backend
+npm run db:seed -w backend
+
+# 5. Start the API (port 4000) and the app (port 5180)
+npm run dev
+```
+
+Open <http://localhost:5180> and sign in with a demo account:
+
+| Role                                  | Email               | Password      |
+| ------------------------------------- | ------------------- | ------------- |
+| User with three months of sample data | `demo@example.com`  | `Password123` |
+| Admin                                 | `admin@example.com` | `Password123` |
