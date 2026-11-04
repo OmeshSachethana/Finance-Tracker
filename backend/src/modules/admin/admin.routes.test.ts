@@ -22,3 +22,15 @@ describe('GET /api/admin/stats', () => {
     expect(res.status).toBe(403);
   });
 });
+
+describe('GET /api/admin/users', () => {
+  it('lists and searches users', async () => {
+    await authHeader(app);
+    const admin = await adminHeader(app);
+    const all = await request(app).get('/api/admin/users').set(admin);
+    expect(all.body.total).toBe(2);
+    expect(all.body.items[0].passwordHash).toBeUndefined();
+    const res = await request(app).get('/api/admin/users?search=user1').set(admin);
+    expect(res.body.items.every((u: { email: string }) => u.email.includes('user1'))).toBe(true);
+  });
+});

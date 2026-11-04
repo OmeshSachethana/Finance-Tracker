@@ -1,3 +1,5 @@
+import type { Pagination } from '@finance-tracker/shared';
+import type { Prisma } from '../../generated/prisma/client.ts';
 import { prisma } from '../../lib/prisma.ts';
 
 /** Platform-wide counts for the admin dashboard. */
@@ -10,4 +12,27 @@ export async function getPlatformStats(now = new Date()) {
     prisma.transaction.count(),
   ]);
   return { users, newUsers, activeUsers, transactions };
+}
+
+/** Paginated user list with transaction counts, optionally filtered by name or email. */
+export async function listUsers({ page, pageSize, search }: Pagination & { search?: string }) {
+  const where: Prisma.UserWhereInput = search
+    ? {
+        OR: [
+          { name: { contains: search, mode: 'insensitive' } },
+          { email: { contains: search, mode: 'insensitive' } },
+        ],
+      }
+    : {};
+  const [users, total] = await Promise.all([
+    prisma.user.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+      include: { _count: { select: { transactions: true } } },
+    }),
+    prisma.user.count({ where }),
+  ]);
+  return { users, total, page, pageSize, totalPages: Math.max(1, Math.ceil(total / pageSize)) };
 }
