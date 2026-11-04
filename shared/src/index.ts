@@ -15,3 +15,4 @@ export * from './utils/calculations.ts';
 export * from './utils/budget.ts';
 export * from './schemas/stats.ts';
 export * from './utils/months.ts';
+export * from './utils/recurrence.ts';
