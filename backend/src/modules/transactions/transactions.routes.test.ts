@@ -35,3 +35,47 @@ describe('POST /api/transactions', () => {
     expect(res.status).toBe(400);
   });
 });
+
+async function seed(count: number) {
+  const user = await userWithDefaults(app);
+  for (let i = 1; i <= count; i++) {
+    await request(app)
+      .post('/api/transactions')
+      .set(user.headers)
+      .send({
+        type: i % 3 === 0 ? 'income' : 'expense',
+        amount: i * 1000,
+        date: `2026-10-${String(i).padStart(2, '0')}`,
+        description: i % 2 === 0 ? `Coffee ${i}` : `Lunch ${i}`,
+        categoryId: i % 3 === 0 ? user.salaryId : user.groceriesId,
+        accountId: user.accountId,
+      });
+  }
+  return user;
+}
+
+describe('GET /api/transactions', () => {
+  it('returns newest first with pagination info', async () => {
+    const { headers } = await seed(5);
+    const res = await request(app).get('/api/transactions?pageSize=2').set(headers);
+    expect(res.body.total).toBe(5);
+    expect(res.body.totalPages).toBe(3);
+    expect(res.body.items.map((t: { date: string }) => t.date)).toEqual([
+      '2026-10-05',
+      '2026-10-04',
+    ]);
+  });
+
+  it('returns the requested page', async () => {
+    const { headers } = await seed(5);
+    const res = await request(app).get('/api/transactions?pageSize=2&page=3').set(headers);
+    expect(res.body.items).toHaveLength(1);
+  });
+
+  it("does not include other users' transactions", async () => {
+    await seed(3);
+    const other = await userWithDefaults(app);
+    const res = await request(app).get('/api/transactions').set(other.headers);
+    expect(res.body.total).toBe(0);
+  });
+});
