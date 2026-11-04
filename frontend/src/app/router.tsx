@@ -12,6 +12,7 @@ import { LoginPage } from '@/pages/LoginPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { RecurringPage } from '@/pages/RecurringPage';
 import { RegisterPage } from '@/pages/RegisterPage';
+import { ReportsPage } from '@/pages/ReportsPage';
 import { SettingsPage } from '@/pages/SettingsPage';
 import { TransactionsPage } from '@/pages/TransactionsPage';
 
@@ -39,6 +40,7 @@ export const routes = [
           { path: 'budgets', element: <BudgetsPage /> },
           { path: 'goals', element: <GoalsPage /> },
           { path: 'recurring', element: <RecurringPage /> },
+          { path: 'reports', element: <ReportsPage /> },
           { path: 'categories', element: <CategoriesPage /> },
           { path: 'accounts', element: <AccountsPage /> },
           { path: 'settings', element: <SettingsPage /> },
