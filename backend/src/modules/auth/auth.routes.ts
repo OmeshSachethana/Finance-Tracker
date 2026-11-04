@@ -1,8 +1,8 @@
-import { registerSchema } from '@finance-tracker/shared';
+import { loginSchema, registerSchema } from '@finance-tracker/shared';
 import { Router } from 'express';
 import { validateBody } from '../../middleware/validate.ts';
 import { toUserDto } from './auth.serializer.ts';
-import { registerUser } from './auth.service.ts';
+import { loginUser, registerUser } from './auth.service.ts';
 import { setRefreshCookie } from './cookies.ts';
 import { createSession } from './session.service.ts';
 
@@ -13,4 +13,11 @@ authRouter.post('/register', validateBody(registerSchema), async (req, res) => {
   const session = await createSession(user);
   setRefreshCookie(res, session.refreshToken, session.refreshExpiresAt);
   res.status(201).json({ user: toUserDto(user), accessToken: session.accessToken });
+});
+
+authRouter.post('/login', validateBody(loginSchema), async (req, res) => {
+  const user = await loginUser(req.body);
+  const session = await createSession(user);
+  setRefreshCookie(res, session.refreshToken, session.refreshExpiresAt);
+  res.json({ user: toUserDto(user), accessToken: session.accessToken });
 });
