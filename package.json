@@ -24,6 +24,7 @@
     "prepare": "husky",
     "dev": "npm run dev -w frontend",
     "build": "npm run build --workspaces",
-    "lint": "npm run lint --workspaces"
+    "lint": "npm run lint --workspaces",
+    "test": "npm run test --workspaces"
   }
 }
