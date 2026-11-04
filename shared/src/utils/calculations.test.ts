@@ -1,4 +1,9 @@
-import { calculateSavingsRate, calculateTotals, sumByCategory } from './calculations';
+import {
+  calculateSavingsRate,
+  calculateTotals,
+  sumByCategory,
+  totalsByMonth,
+} from './calculations';
 
 describe('calculateTotals', () => {
   it('returns zeros for no transactions', () => {
@@ -38,5 +43,17 @@ describe('sumByCategory', () => {
     ]);
     expect(sums.get('food')).toBe(150);
     expect(sums.get('rent')).toBe(900);
+  });
+});
+
+describe('totalsByMonth', () => {
+  it('groups totals by month', () => {
+    const months = totalsByMonth([
+      { type: 'income', amount: 1000, date: '2026-10-01' },
+      { type: 'expense', amount: 200, date: '2026-10-15' },
+      { type: 'expense', amount: 300, date: '2026-11-02' },
+    ]);
+    expect(months.get('2026-10')).toEqual({ income: 1000, expense: 200, balance: 800 });
+    expect(months.get('2026-11')).toEqual({ income: 0, expense: 300, balance: -300 });
   });
 });
