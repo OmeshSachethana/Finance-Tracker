@@ -4,16 +4,8 @@ import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { useMoney } from '@/hooks/useMoney';
-import { formatDate } from '@/lib/dates';
+import { daysUntil, formatDate } from '@/lib/dates';
 import type { GoalWithProgress } from './api';
-
-/** Whole days from today until an ISO date (negative if it has passed). */
-export function daysUntil(isoDate: string, today = new Date()): number {
-  const [y, m, d] = isoDate.split('-').map(Number) as [number, number, number];
-  const target = Date.UTC(y, m - 1, d);
-  const now = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
-  return Math.round((target - now) / 86_400_000);
-}
 
 interface GoalCardProps {
   goal: GoalWithProgress;
