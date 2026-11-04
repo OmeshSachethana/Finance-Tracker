@@ -1,3 +1,6 @@
+import type { CreateAccountInput } from '@finance-tracker/shared';
+import { notFound } from '../../lib/errors.ts';
+import { toDbAccountType } from '../../lib/mappers.ts';
 import { prisma } from '../../lib/prisma.ts';
 
 /** Returns each account with its current balance (opening balance + income - expenses). */
@@ -19,5 +22,17 @@ export async function listAccounts(userId: string) {
         return s.type === 'INCOME' ? total + amount : total - amount;
       }, 0);
     return { account, balance: account.openingBalance + net };
+  });
+}
+
+export async function getAccount(userId: string, id: string) {
+  const account = await prisma.account.findFirst({ where: { id, userId } });
+  if (!account) throw notFound('Account not found');
+  return account;
+}
+
+export function createAccount(userId: string, input: CreateAccountInput) {
+  return prisma.account.create({
+    data: { ...input, type: toDbAccountType(input.type), userId },
   });
 }
