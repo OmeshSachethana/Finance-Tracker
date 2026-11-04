@@ -76,3 +76,17 @@ export async function api<T>(path: string, options: RequestOptions = {}): Promis
   }
   return parse<T>(res);
 }
+
+/** Downloads a file from the API (with auth) and saves it via a temporary link. */
+export async function downloadFile(path: string, filename: string, query?: Query): Promise<void> {
+  let res = await send(path, { query });
+  if (res.status === 401 && (await refreshAccessToken())) res = await send(path, { query });
+  if (!res.ok) await parse(res);
+
+  const url = URL.createObjectURL(await res.blob());
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(url);
+}
