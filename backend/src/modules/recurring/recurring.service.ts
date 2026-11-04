@@ -1,6 +1,6 @@
-import type { CreateRecurringRuleInput } from '@finance-tracker/shared';
+import type { CreateRecurringRuleInput, UpdateRecurringRuleInput } from '@finance-tracker/shared';
 import type { Frequency as DbFrequency } from '../../generated/prisma/client.ts';
-import { badRequest } from '../../lib/errors.ts';
+import { badRequest, notFound } from '../../lib/errors.ts';
 import { toDbDate, toDbTransactionType } from '../../lib/mappers.ts';
 import { prisma } from '../../lib/prisma.ts';
 import { getAccount } from '../accounts/accounts.service.ts';
@@ -29,4 +29,27 @@ export async function createRecurringRule(userId: string, input: CreateRecurring
       nextRunDate: toDbDate(input.startDate),
     },
   });
+}
+
+async function getRecurringRule(userId: string, id: string) {
+  const rule = await prisma.recurringRule.findFirst({ where: { id, userId } });
+  if (!rule) throw notFound('Recurring rule not found');
+  return rule;
+}
+
+export async function updateRecurringRule(
+  userId: string,
+  id: string,
+  input: UpdateRecurringRuleInput,
+) {
+  await getRecurringRule(userId, id);
+  return prisma.recurringRule.update({
+    where: { id },
+    data: { ...input, endDate: input.endDate ? toDbDate(input.endDate) : undefined },
+  });
+}
+
+export async function deleteRecurringRule(userId: string, id: string) {
+  await getRecurringRule(userId, id);
+  await prisma.recurringRule.delete({ where: { id } });
 }

@@ -36,4 +36,15 @@ describe('recurring rules', () => {
     const res = await ruleFor(user, { endDate: '2026-01-01' });
     expect(res.status).toBe(400);
   });
+
+  it('pauses and deletes a rule', async () => {
+    const user = await userWithDefaults(app);
+    const created = await ruleFor(user);
+    const paused = await request(app)
+      .patch(`/api/recurring/${created.body.id}`)
+      .set(user.headers)
+      .send({ active: false });
+    expect(paused.body.active).toBe(false);
+    await request(app).delete(`/api/recurring/${created.body.id}`).set(user.headers).expect(204);
+  });
 });
