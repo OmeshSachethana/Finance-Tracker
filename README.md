@@ -20,3 +20,13 @@ A full-stack personal finance app for tracking income and expenses, setting mont
 | Dark mode                                                      | Mobile                                                         |
 | -------------------------------------------------------------- | -------------------------------------------------------------- |
 | ![Dashboard in dark mode](docs/screenshots/dashboard-dark.png) | ![Dashboard on a phone](docs/screenshots/dashboard-mobile.png) |
+
+## Tech stack
+
+| Area     | Tools                                                                                               |
+| -------- | --------------------------------------------------------------------------------------------------- |
+| Frontend | React 19, TypeScript, Vite, Tailwind CSS, TanStack Query, React Router, React Hook Form, Recharts   |
+| Backend  | Node.js 24, Express 5, Prisma 7, PostgreSQL 17, Zod, JWT access tokens with rotating refresh tokens |
+| Shared   | A `shared` workspace with validation schemas, types and money/date helpers used by both sides       |
+| Testing  | Vitest, Testing Library, Supertest against a real database, Playwright end-to-end tests             |
+| Tooling  | ESLint, Prettier, Husky, lint-staged, GitHub Actions, Docker                                        |
