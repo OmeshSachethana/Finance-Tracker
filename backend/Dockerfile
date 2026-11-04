@@ -4,6 +4,8 @@
 FROM node:24-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
+# Use the npm version the lockfile was written with (see packageManager).
+RUN npm install -g "$(node -p "require('./package.json').packageManager")"
 COPY shared/package.json shared/
 COPY backend/package.json backend/
 COPY frontend/package.json frontend/
@@ -22,6 +24,7 @@ FROM node:24-alpine AS runtime
 ENV NODE_ENV=production
 WORKDIR /app
 COPY package.json package-lock.json ./
+RUN npm install -g "$(node -p "require('./package.json').packageManager")"
 COPY shared/package.json shared/
 COPY backend/package.json backend/
 COPY frontend/package.json frontend/
