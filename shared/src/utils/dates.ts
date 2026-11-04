@@ -10,3 +10,10 @@ export function toISODate(date: Date): string {
 export function toMonthKey(date: Date): string {
   return toISODate(date).slice(0, 7);
 }
+
+/** Returns the first and last calendar day of the month containing `date`. */
+export function getMonthRange(date: Date): { start: Date; end: Date } {
+  const start = new Date(date.getFullYear(), date.getMonth(), 1);
+  const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  return { start, end };
+}
