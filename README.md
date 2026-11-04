@@ -104,6 +104,7 @@ Run these from the repository root.
 - **Authentication** uses a short-lived access token kept in memory plus a refresh token in an `httpOnly`, `SameSite=Strict` cookie. Refresh tokens are stored hashed and rotated on every use, so a stolen token stops working after one refresh.
 - **Validation** rules live in `shared/` and run both in the browser forms and on the API, so the two never disagree.
 - **Recurring rules** are processed hourly. A monthly rule that starts on the 31st falls on the last day of shorter months and returns to the 31st afterwards.
+- **API**: see the [API reference](docs/API.md) for every endpoint.
 - **Security**: Helmet headers, CORS limited to the app origin, request size limits, login rate limiting, password hashing with bcrypt, and CSV export protected against spreadsheet formula injection.
 
 ## Testing
