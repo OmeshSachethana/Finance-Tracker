@@ -21,3 +21,24 @@ describe('GET /api/categories', () => {
     expect(res.status).toBe(401);
   });
 });
+
+describe('POST /api/categories', () => {
+  const body = { name: 'Pets', type: 'expense', color: '#f59e0b', icon: 'paw-print' };
+
+  it('creates a category', async () => {
+    const { Authorization } = await authHeader(app);
+    const res = await request(app).post('/api/categories').set({ Authorization }).send(body);
+    expect(res.status).toBe(201);
+    expect(res.body).toMatchObject(body);
+  });
+
+  it('rejects duplicate names regardless of case', async () => {
+    const { Authorization } = await authHeader(app);
+    await request(app).post('/api/categories').set({ Authorization }).send(body);
+    const res = await request(app)
+      .post('/api/categories')
+      .set({ Authorization })
+      .send({ ...body, name: 'PETS' });
+    expect(res.status).toBe(409);
+  });
+});
