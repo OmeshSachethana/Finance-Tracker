@@ -3,6 +3,7 @@ import { AppLayout } from '@/components/layout/AppLayout';
 import { AuthLayout } from '@/components/layout/AuthLayout';
 import { RedirectIfAuthenticated } from '@/features/auth/RedirectIfAuthenticated';
 import { RequireAuth } from '@/features/auth/RequireAuth';
+import { AccountsPage } from '@/pages/AccountsPage';
 import { BudgetsPage } from '@/pages/BudgetsPage';
 import { CategoriesPage } from '@/pages/CategoriesPage';
 import { DashboardPage } from '@/pages/DashboardPage';
@@ -38,6 +39,7 @@ export const routes = [
           { path: 'goals', element: <GoalsPage /> },
           { path: 'recurring', element: <RecurringPage /> },
           { path: 'categories', element: <CategoriesPage /> },
+          { path: 'accounts', element: <AccountsPage /> },
           { path: '*', element: <NotFoundPage /> },
         ],
       },
