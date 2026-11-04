@@ -2,12 +2,13 @@ import type { Category, CreateCategoryInput, UpdateCategoryInput } from '@financ
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api/client';
 import { queryKeys } from '@/lib/queryKeys';
+import { sortCategories } from './sortCategories';
 
 export function useCategories() {
   return useQuery({
     queryKey: queryKeys.categories,
     queryFn: () => api<{ items: Category[] }>('/categories'),
-    select: (data) => data.items,
+    select: (data) => sortCategories(data.items),
     staleTime: 5 * 60_000,
   });
 }
