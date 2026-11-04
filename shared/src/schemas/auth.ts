@@ -1,0 +1,57 @@
+import type { CurrencyCode } from '../constants/currencies.ts';
+import { currencySchema } from './common.ts';
+import { z } from 'zod';
+
+export const emailSchema = z.string().trim().toLowerCase().pipe(z.email('Enter a valid email'));
+
+export const passwordSchema = z
+  .string()
+  .min(8, 'Password must be at least 8 characters')
+  .max(72, 'Password is too long')
+  .regex(/[a-z]/, 'Password needs a lowercase letter')
+  .regex(/[A-Z]/, 'Password needs an uppercase letter')
+  .regex(/\d/, 'Password needs a number');
+
+export const loginSchema = z.object({
+  email: emailSchema,
+  password: z.string().min(1, 'Password is required'),
+});
+export type LoginInput = z.infer<typeof loginSchema>;
+
+export const registerSchema = z.object({
+  name: z.string().trim().min(1, 'Name is required').max(60),
+  email: emailSchema,
+  password: passwordSchema,
+});
+export type RegisterInput = z.infer<typeof registerSchema>;
+
+export const userRoleSchema = z.enum(['user', 'admin']);
+export type UserRole = z.infer<typeof userRoleSchema>;
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  currency: CurrencyCode;
+  createdAt: string;
+}
+
+export const updateProfileSchema = z
+  .object({
+    name: z.string().trim().min(1, 'Name is required').max(60),
+    currency: currencySchema,
+  })
+  .partial();
+export type UpdateProfileInput = z.infer<typeof updateProfileSchema>;
+
+export const changePasswordSchema = z.object({
+  currentPassword: z.string().min(1, 'Current password is required'),
+  newPassword: passwordSchema,
+});
+export type ChangePasswordInput = z.infer<typeof changePasswordSchema>;
+
+export const deleteAccountSchema = z.object({
+  password: z.string().min(1, 'Password is required'),
+});
+export type DeleteAccountInput = z.infer<typeof deleteAccountSchema>;

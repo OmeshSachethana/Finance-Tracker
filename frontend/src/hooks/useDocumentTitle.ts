@@ -1,0 +1,10 @@
+import { useEffect } from 'react';
+
+const APP_NAME = 'Finance Tracker';
+
+/** Sets the browser tab title, e.g. "Budgets · Finance Tracker". */
+export function useDocumentTitle(title?: string) {
+  useEffect(() => {
+    document.title = title ? `${title} · ${APP_NAME}` : APP_NAME;
+  }, [title]);
+}
