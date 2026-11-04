@@ -48,3 +48,11 @@ describe('new user defaults', () => {
     expect(count).toBe(DEFAULT_CATEGORIES.length);
   });
 });
+
+describe('new user account', () => {
+  it('creates a default cash account', async () => {
+    const user = await registerUser(input);
+    const accounts = await prisma.account.findMany({ where: { userId: user.id } });
+    expect(accounts.map((a) => a.name)).toEqual(['Cash']);
+  });
+});

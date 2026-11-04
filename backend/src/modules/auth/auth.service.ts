@@ -12,6 +12,9 @@ export async function registerUser(input: RegisterInput) {
       name: input.name,
       email: input.email,
       passwordHash: await hashPassword(input.password),
+      accounts: {
+        create: { name: 'Cash', type: 'CASH', currency: 'USD', color: '#22c55e' },
+      },
       categories: {
         create: DEFAULT_CATEGORIES.map((c) => ({
           name: c.name,
