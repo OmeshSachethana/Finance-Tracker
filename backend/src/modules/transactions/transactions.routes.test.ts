@@ -92,4 +92,10 @@ describe('GET /api/transactions filters', () => {
     const res = await request(app).get(`/api/transactions?categoryId=${salaryId}`).set(headers);
     expect(res.body.total).toBe(2);
   });
+
+  it('filters by account', async () => {
+    const { headers, accountId } = await seed(3);
+    const res = await request(app).get(`/api/transactions?accountId=${accountId}`).set(headers);
+    expect(res.body.total).toBe(3);
+  });
 });

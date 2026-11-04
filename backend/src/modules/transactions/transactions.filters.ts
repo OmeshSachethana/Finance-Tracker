@@ -11,5 +11,6 @@ export function buildTransactionWhere(
     userId,
     type: filters.type ? toDbTransactionType(filters.type) : undefined,
     categoryId: filters.categoryId,
+    accountId: filters.accountId,
   };
 }
