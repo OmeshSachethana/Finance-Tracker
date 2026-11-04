@@ -47,3 +47,12 @@ export async function updateCategory(userId: string, id: string, input: UpdateCa
     data: { ...input, type },
   });
 }
+
+export async function deleteCategory(userId: string, id: string) {
+  await getCategory(userId, id);
+  const used = await prisma.transaction.count({ where: { categoryId: id } });
+  if (used > 0) {
+    throw conflict('This category has transactions. Move them to another category first.');
+  }
+  await prisma.category.delete({ where: { id } });
+}
