@@ -1,5 +1,9 @@
-import { getMonthRange, type CreateBudgetInput } from '@finance-tracker/shared';
-import { badRequest, conflict } from '../../lib/errors.ts';
+import {
+  getMonthRange,
+  type CreateBudgetInput,
+  type UpdateBudgetInput,
+} from '@finance-tracker/shared';
+import { badRequest, conflict, notFound } from '../../lib/errors.ts';
 import { toDbDate } from '../../lib/mappers.ts';
 import { prisma } from '../../lib/prisma.ts';
 import { getCategory } from '../categories/categories.service.ts';
@@ -40,4 +44,15 @@ export async function createBudget(userId: string, input: CreateBudgetInput) {
   if (existing) throw conflict('This category already has a budget for that month');
 
   return prisma.budget.create({ data: { ...input, userId } });
+}
+
+async function getBudget(userId: string, id: string) {
+  const budget = await prisma.budget.findFirst({ where: { id, userId } });
+  if (!budget) throw notFound('Budget not found');
+  return budget;
+}
+
+export async function updateBudget(userId: string, id: string, input: UpdateBudgetInput) {
+  await getBudget(userId, id);
+  return prisma.budget.update({ where: { id }, data: input });
 }

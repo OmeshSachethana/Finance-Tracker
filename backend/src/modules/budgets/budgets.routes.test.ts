@@ -50,4 +50,17 @@ describe('budgets', () => {
       .send({ categoryId: salaryId, month: '2026-11', limit: 100 });
     expect(res.status).toBe(400);
   });
+
+  it('updates the limit', async () => {
+    const { headers, groceriesId } = await userWithDefaults(app);
+    const created = await request(app)
+      .post('/api/budgets')
+      .set(headers)
+      .send({ categoryId: groceriesId, month: '2026-11', limit: 40000 });
+    const res = await request(app)
+      .patch(`/api/budgets/${created.body.id}`)
+      .set(headers)
+      .send({ limit: 50000, alertThreshold: 90 });
+    expect(res.body).toMatchObject({ limit: 50000, alertThreshold: 90 });
+  });
 });
