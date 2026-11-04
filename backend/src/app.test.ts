@@ -14,3 +14,13 @@ describe('app', () => {
     expect(res.headers['x-powered-by']).toBeUndefined();
   });
 });
+
+describe('body parsing', () => {
+  it('rejects malformed JSON with a 400', async () => {
+    const res = await request(createApp())
+      .post('/api/health')
+      .set('Content-Type', 'application/json')
+      .send('{"broken":');
+    expect(res.status).toBe(400);
+  });
+});
