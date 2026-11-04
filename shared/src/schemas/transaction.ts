@@ -37,3 +37,8 @@ export const transactionSortSchema = z.object({
   order: z.enum(['asc', 'desc']).default('desc'),
 });
 export type TransactionSort = z.infer<typeof transactionSortSchema>;
+
+export const bulkDeleteSchema = z.object({
+  ids: z.array(idSchema).min(1).max(100),
+});
+export type BulkDeleteInput = z.infer<typeof bulkDeleteSchema>;
