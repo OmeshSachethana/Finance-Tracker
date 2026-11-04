@@ -98,4 +98,12 @@ describe('GET /api/transactions filters', () => {
     const res = await request(app).get(`/api/transactions?accountId=${accountId}`).set(headers);
     expect(res.body.total).toBe(3);
   });
+
+  it('filters by date range inclusively', async () => {
+    const { headers } = await seed(6);
+    const res = await request(app)
+      .get('/api/transactions?from=2026-10-02&to=2026-10-04')
+      .set(headers);
+    expect(res.body.total).toBe(3);
+  });
 });
