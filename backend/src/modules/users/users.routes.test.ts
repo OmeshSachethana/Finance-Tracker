@@ -51,3 +51,25 @@ describe('POST /api/users/me/password', () => {
     expect(res.status).toBe(400);
   });
 });
+
+describe('DELETE /api/users/me', () => {
+  it('deletes the account and its data', async () => {
+    const { Authorization } = await authHeader(app);
+    await request(app)
+      .delete('/api/users/me')
+      .set({ Authorization })
+      .send({ password: 'Secret123' })
+      .expect(204);
+    const res = await request(app).get('/api/auth/me').set({ Authorization });
+    expect(res.status).toBe(401);
+  });
+
+  it('requires the correct password', async () => {
+    const { Authorization } = await authHeader(app);
+    const res = await request(app)
+      .delete('/api/users/me')
+      .set({ Authorization })
+      .send({ password: 'nope' });
+    expect(res.status).toBe(400);
+  });
+});

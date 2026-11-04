@@ -24,3 +24,12 @@ export async function changePassword(userId: string, input: ChangePasswordInput)
     }),
   ]);
 }
+
+/** Permanently deletes the user and all their data after confirming the password. */
+export async function deleteAccount(userId: string, password: string) {
+  const user = await prisma.user.findUniqueOrThrow({ where: { id: userId } });
+  if (!(await verifyPassword(password, user.passwordHash))) {
+    throw badRequest('Password is incorrect');
+  }
+  await prisma.user.delete({ where: { id: userId } });
+}
