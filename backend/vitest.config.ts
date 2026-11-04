@@ -13,6 +13,7 @@ export default defineConfig({
     env: {
       NODE_ENV: 'test',
       DATABASE_URL: TEST_DATABASE_URL,
+      JWT_ACCESS_SECRET: 'test-secret-that-is-at-least-32-characters-long',
     },
   },
 });
