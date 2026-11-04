@@ -23,3 +23,17 @@ describe('fromMinorUnits', () => {
     expect(fromMinorUnits(500, 'JPY')).toBe(500);
   });
 });
+
+describe('formatMoney', () => {
+  it('formats USD with two decimals', () => {
+    expect(formatMoney(123456, 'USD')).toBe('$1,234.56');
+  });
+
+  it('formats negative amounts', () => {
+    expect(formatMoney(-500, 'USD')).toBe('-$5.00');
+  });
+
+  it('formats JPY without decimals', () => {
+    expect(formatMoney(1500, 'JPY')).toBe('¥1,500');
+  });
+});
