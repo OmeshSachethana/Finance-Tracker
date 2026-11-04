@@ -28,6 +28,8 @@ model User {
 
   categories Category[]
 
+  transactions Transaction[]
+
   @@map("users")
 }
 
@@ -53,17 +55,18 @@ enum AccountType {
 }
 
 model Account {
-  id             String      @id @default(uuid())
+  id             String        @id @default(uuid())
   userId         String
-  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   name           String
   type           AccountType
   currency       String
-  openingBalance Int         @default(0)
+  openingBalance Int           @default(0)
   color          String
-  archived       Boolean     @default(false)
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
+  archived       Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  transactions   Transaction[]
 
   @@index([userId])
   @@map("accounts")
@@ -75,15 +78,36 @@ enum TransactionType {
 }
 
 model Category {
-  id        String          @id @default(uuid())
-  userId    String
-  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name      String
-  type      TransactionType
-  color     String
-  icon      String
-  createdAt DateTime        @default(now())
+  id           String          @id @default(uuid())
+  userId       String
+  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name         String
+  type         TransactionType
+  color        String
+  icon         String
+  transactions Transaction[]
+  createdAt    DateTime        @default(now())
 
   @@unique([userId, name, type])
   @@map("categories")
+}
+
+model Transaction {
+  id          String          @id @default(uuid())
+  userId      String
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accountId   String
+  account     Account         @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  categoryId  String
+  category    Category        @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  type        TransactionType
+  amount      Int
+  date        DateTime        @db.Date
+  description String
+  notes       String?
+  tags        String[]        @default([])
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@map("transactions")
 }
