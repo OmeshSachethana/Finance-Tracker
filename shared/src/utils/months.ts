@@ -7,3 +7,10 @@ export function lastMonthKeys(count: number, end: Date = new Date()): string[] {
   }
   return keys;
 }
+
+/** Returns the month key before the given one, e.g. 2026-01 -> 2025-12. */
+export function previousMonthKey(month: string): string {
+  const [year, m] = month.split('-').map(Number) as [number, number];
+  const d = new Date(year, m - 2, 1);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+}
