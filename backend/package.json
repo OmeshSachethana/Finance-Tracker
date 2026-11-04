@@ -9,7 +9,8 @@
     "start": "node --env-file-if-exists=.env src/server.ts",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "db:generate": "prisma generate"
   },
   "dependencies": {
     "@finance-tracker/shared": "^0.1.0",
