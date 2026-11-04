@@ -9,7 +9,7 @@ import { SpendingByCategory } from '@/features/dashboard/SpendingByCategory';
 import { StatTile } from '@/features/dashboard/StatTile';
 import { useCategoryBreakdown, useMonthlyTrend, useSummary } from '@/features/stats/api';
 import { useMoney } from '@/hooks/useMoney';
-import { currentMonthKey, monthToRange, shiftMonth } from '@/lib/months';
+import { comparisonRange, currentMonthKey, monthToRange } from '@/lib/months';
 import { percentChange } from '@/lib/percentChange';
 
 export function DashboardPage() {
@@ -19,7 +19,7 @@ export function DashboardPage() {
   const range = monthToRange(month);
 
   const { data: summary } = useSummary(range);
-  const { data: previous } = useSummary(monthToRange(shiftMonth(month, -1)));
+  const { data: previous } = useSummary(comparisonRange(month));
   const { data: byCategory } = useCategoryBreakdown(range);
   const { data: trend } = useMonthlyTrend(6);
 

@@ -16,3 +16,15 @@ export function shiftMonth(monthKey: string, delta: number): string {
 export function currentMonthKey(): string {
   return toMonthKey(new Date());
 }
+
+/**
+ * The range to compare `range` against: the previous month, cut to the same
+ * number of days when `range` is the current, still unfinished month.
+ */
+export function comparisonRange(monthKey: string, today = new Date()): DateRange {
+  const previous = monthToRange(shiftMonth(monthKey, -1));
+  if (monthKey !== toMonthKey(today)) return previous;
+  const lastDay = Number(previous.to.slice(8));
+  const day = Math.min(today.getDate(), lastDay);
+  return { from: previous.from, to: `${previous.to.slice(0, 8)}${String(day).padStart(2, '0')}` };
+}
