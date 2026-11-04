@@ -1,4 +1,4 @@
-import { toMinorUnits } from './money';
+import { formatMoney, fromMinorUnits, toMinorUnits } from './money';
 
 describe('toMinorUnits', () => {
   it('converts dollars to cents', () => {
@@ -11,5 +11,15 @@ describe('toMinorUnits', () => {
 
   it('handles zero-decimal currencies', () => {
     expect(toMinorUnits(500, 'JPY')).toBe(500);
+  });
+});
+
+describe('fromMinorUnits', () => {
+  it('converts cents to dollars', () => {
+    expect(fromMinorUnits(1234, 'USD')).toBe(12.34);
+  });
+
+  it('handles zero-decimal currencies', () => {
+    expect(fromMinorUnits(500, 'JPY')).toBe(500);
   });
 });
