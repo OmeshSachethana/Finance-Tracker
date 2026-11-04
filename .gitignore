@@ -24,3 +24,8 @@ Thumbs.db
 
 # Prisma client
 backend/src/generated/
+
+# Playwright
+frontend/test-results/
+frontend/playwright-report/
+frontend/e2e/.screenshots/
