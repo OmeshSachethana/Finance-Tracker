@@ -5,10 +5,12 @@ interface PageHeaderProps {
   title: string;
   description?: string;
   actions?: ReactNode;
+  /** Tab title when it should differ from the heading. */
+  documentTitle?: string;
 }
 
-export function PageHeader({ title, description, actions }: PageHeaderProps) {
-  useDocumentTitle(title);
+export function PageHeader({ title, description, actions, documentTitle }: PageHeaderProps) {
+  useDocumentTitle(documentTitle ?? title);
   return (
     <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
       <div>

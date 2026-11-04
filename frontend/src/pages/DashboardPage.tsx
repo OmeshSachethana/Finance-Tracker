@@ -29,6 +29,7 @@ export function DashboardPage() {
     <>
       <PageHeader
         title={`Hello, ${firstName}`}
+        documentTitle="Dashboard"
         description="Here is how your money moved this month."
         actions={<MonthPicker value={month} onChange={setMonth} />}
       />
