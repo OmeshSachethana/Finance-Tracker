@@ -34,3 +34,21 @@
     @apply outline-2 outline-offset-2 outline-brand-500;
   }
 }
+
+/*
+ * Chart colours. Income/expense pair validated for colour-blind separation and
+ * >= 3:1 contrast against the card surface in each theme (white / slate-900).
+ */
+:root {
+  --chart-income: #179e6f;
+  --chart-expense: #6250d6;
+  --chart-grid: #e2e8f0;
+  --chart-axis: #64748b;
+}
+
+.dark {
+  --chart-income: #199e70;
+  --chart-expense: #9085e9;
+  --chart-grid: #1e293b;
+  --chart-axis: #94a3b8;
+}
