@@ -11,6 +11,7 @@ import { accountsRouter } from './modules/accounts/accounts.routes.ts';
 import { authRouter } from './modules/auth/auth.routes.ts';
 import { budgetsRouter } from './modules/budgets/budgets.routes.ts';
 import { categoriesRouter } from './modules/categories/categories.routes.ts';
+import { recurringRouter } from './modules/recurring/recurring.routes.ts';
 import { statsRouter } from './modules/stats/stats.routes.ts';
 import { transactionsRouter } from './modules/transactions/transactions.routes.ts';
 import { goalsRouter } from './modules/goals/goals.routes.ts';
@@ -35,6 +36,7 @@ export function createApp() {
   app.use('/api/stats', statsRouter);
   app.use('/api/budgets', budgetsRouter);
   app.use('/api/goals', goalsRouter);
+  app.use('/api/recurring', recurringRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
