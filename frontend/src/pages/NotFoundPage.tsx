@@ -1,8 +1,10 @@
 import { Compass } from 'lucide-react';
 import { Link } from 'react-router';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 
 export function NotFoundPage() {
+  useDocumentTitle('Page not found');
   return (
     <div className="flex min-h-[60vh] items-center justify-center">
       <EmptyState

@@ -9,10 +9,12 @@ import { Field } from '@/components/ui/Field';
 import { FormAlert } from '@/components/ui/FormAlert';
 import { Input } from '@/components/ui/Input';
 import { useAuth } from '@/features/auth/useAuth';
+import { useDocumentTitle } from '@/hooks/useDocumentTitle';
 import { applyServerErrors } from '@/lib/formErrors';
 
 export function RegisterPage() {
   const { register: signUp } = useAuth();
+  useDocumentTitle('Create account');
   const navigate = useNavigate();
   const [formError, setFormError] = useState<string | null>(null);
   const {
