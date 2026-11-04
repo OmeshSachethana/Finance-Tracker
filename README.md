@@ -75,3 +75,25 @@ Run these from the repository root.
 | `npm run build`                 | Builds the frontend for production                                         |
 | `npm run db:migrate -w backend` | Creates and applies a new migration after a schema change                  |
 | `npm run db:studio -w backend`  | Opens Prisma Studio to browse the database                                 |
+
+## Project structure
+
+```text
+.
+├── backend/            Express API
+│   ├── prisma/         Database schema, migrations and seed data
+│   └── src/
+│       ├── modules/    One folder per feature: routes, service, serializer and tests
+│       ├── middleware/ Auth, validation, rate limiting and error handling
+│       ├── jobs/       Background job that runs recurring transactions
+│       └── lib/        Database client, tokens, passwords, CSV and logging
+├── frontend/           React app
+│   ├── e2e/            Playwright end-to-end tests
+│   └── src/
+│       ├── features/   Feature folders: API hooks, forms and components
+│       ├── pages/      One component per route
+│       ├── components/ Shared UI and layout
+│       └── lib/        API client, formatting and helpers
+├── shared/             Schemas, types and helpers used by both apps
+└── docker-compose*.yml Local database and the production-like stack
+```
