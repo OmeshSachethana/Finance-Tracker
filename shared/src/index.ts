@@ -13,3 +13,4 @@ export * from './schemas/budget.ts';
 export * from './schemas/goal.ts';
 export * from './utils/calculations.ts';
 export * from './utils/budget.ts';
+export * from './schemas/stats.ts';
