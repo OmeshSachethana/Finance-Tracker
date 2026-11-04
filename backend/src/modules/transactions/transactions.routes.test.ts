@@ -186,3 +186,16 @@ describe('PATCH /api/transactions/:id', () => {
     expect(res.status).toBe(400);
   });
 });
+
+describe('DELETE /api/transactions/:id', () => {
+  it('deletes a transaction', async () => {
+    const { headers } = await seed(2);
+    const list = await request(app).get('/api/transactions').set(headers);
+    await request(app)
+      .delete(`/api/transactions/${list.body.items[0].id}`)
+      .set(headers)
+      .expect(204);
+    const after = await request(app).get('/api/transactions').set(headers);
+    expect(after.body.total).toBe(1);
+  });
+});

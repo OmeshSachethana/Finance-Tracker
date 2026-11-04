@@ -70,3 +70,8 @@ export async function updateTransaction(userId: string, id: string, input: Updat
     data: { ...input, type, date: input.date ? toDbDate(input.date) : undefined },
   });
 }
+
+export async function deleteTransaction(userId: string, id: string) {
+  await getTransaction(userId, id);
+  await prisma.transaction.delete({ where: { id } });
+}

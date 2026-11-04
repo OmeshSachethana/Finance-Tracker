@@ -11,6 +11,7 @@ import { validateBody, validateQuery } from '../../middleware/validate.ts';
 import { toTransactionDto } from './transactions.serializer.ts';
 import {
   createTransaction,
+  deleteTransaction,
   getTransaction,
   listTransactions,
   updateTransaction,
@@ -42,4 +43,9 @@ transactionsRouter.get('/:id', async (req, res) => {
 transactionsRouter.patch('/:id', validateBody(updateTransactionSchema), async (req, res) => {
   const transaction = await updateTransaction(req.user!.sub, req.params.id as string, req.body);
   res.json(toTransactionDto(transaction));
+});
+
+transactionsRouter.delete('/:id', async (req, res) => {
+  await deleteTransaction(req.user!.sub, req.params.id as string);
+  res.status(204).end();
 });
