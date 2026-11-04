@@ -1,3 +1,5 @@
+import { DEFAULT_CATEGORIES } from '@finance-tracker/shared';
+import { prisma } from '../../lib/prisma.ts';
 import { resetDatabase } from '../../test/db.ts';
 import { loginUser, registerUser } from './auth.service.ts';
 
@@ -36,5 +38,13 @@ describe('loginUser', () => {
     await expect(loginUser({ email: 'no@example.com', password: 'x' })).rejects.toMatchObject({
       status: 401,
     });
+  });
+});
+
+describe('new user defaults', () => {
+  it('creates the default categories', async () => {
+    const user = await registerUser(input);
+    const count = await prisma.category.count({ where: { userId: user.id } });
+    expect(count).toBe(DEFAULT_CATEGORIES.length);
   });
 });

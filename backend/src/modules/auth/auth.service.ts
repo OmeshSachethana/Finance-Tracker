@@ -1,4 +1,4 @@
-import type { LoginInput, RegisterInput } from '@finance-tracker/shared';
+import { DEFAULT_CATEGORIES, type LoginInput, type RegisterInput } from '@finance-tracker/shared';
 import { conflict, unauthorized } from '../../lib/errors.ts';
 import { hashPassword, verifyPassword } from '../../lib/password.ts';
 import { prisma } from '../../lib/prisma.ts';
@@ -12,6 +12,14 @@ export async function registerUser(input: RegisterInput) {
       name: input.name,
       email: input.email,
       passwordHash: await hashPassword(input.password),
+      categories: {
+        create: DEFAULT_CATEGORIES.map((c) => ({
+          name: c.name,
+          type: c.type === 'income' ? 'INCOME' : 'EXPENSE',
+          color: c.color,
+          icon: c.icon,
+        })),
+      },
     },
   });
 }
