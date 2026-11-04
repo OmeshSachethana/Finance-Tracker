@@ -37,3 +37,11 @@ export async function rotateSession(refreshToken: string): Promise<Session> {
   await prisma.refreshToken.update({ where: { id: stored.id }, data: { revokedAt: new Date() } });
   return createSession(stored.user);
 }
+
+/** Revokes a refresh token so it can no longer be used. */
+export async function revokeSession(refreshToken: string): Promise<void> {
+  await prisma.refreshToken.updateMany({
+    where: { tokenHash: hashRefreshToken(refreshToken), revokedAt: null },
+    data: { revokedAt: new Date() },
+  });
+}
