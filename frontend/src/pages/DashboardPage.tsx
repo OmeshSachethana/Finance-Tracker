@@ -56,10 +56,10 @@ export function DashboardPage() {
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-5">
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-3 [&>*]:h-full">
           <MonthlyTrendChart items={trend} />
         </div>
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2 [&>*]:h-full">
           <SpendingByCategory items={byCategory} />
         </div>
       </div>
