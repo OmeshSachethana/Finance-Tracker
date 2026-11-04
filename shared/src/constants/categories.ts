@@ -20,3 +20,8 @@ export const DEFAULT_INCOME_CATEGORIES: CreateCategoryInput[] = [
   { name: 'Gifts', type: 'income', color: '#a855f7', icon: 'gift' },
   { name: 'Other Income', type: 'income', color: '#64748b', icon: 'circle-plus' },
 ];
+
+export const DEFAULT_CATEGORIES: CreateCategoryInput[] = [
+  ...DEFAULT_EXPENSE_CATEGORIES,
+  ...DEFAULT_INCOME_CATEGORIES,
+];
