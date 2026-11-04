@@ -4,7 +4,7 @@ import { login, snap } from './helpers';
 test('adds, edits and removes a budget', async ({ page }) => {
   await login(page);
   await page.getByRole('link', { name: 'Budgets' }).click();
-  await expect(page.getByRole('heading', { name: 'Budgets' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Budgets', exact: true })).toBeVisible();
 
   await page.getByRole('button', { name: 'Add budget' }).first().click();
   const dialog = page.getByRole('dialog', { name: 'Add budget' });
