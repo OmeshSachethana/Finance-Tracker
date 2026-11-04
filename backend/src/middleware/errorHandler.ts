@@ -1,5 +1,6 @@
 import type { ErrorRequestHandler } from 'express';
 import { AppError } from '../lib/errors.ts';
+import { logger } from '../lib/logger.ts';
 
 /** Errors thrown by Express body parsing carry a `type` and a 4xx `status`. */
 function isBodyParserError(err: unknown): err is { status: number; type: string } {
@@ -25,7 +26,7 @@ export const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
     return;
   }
 
-  console.error(err);
+  logger.error({ err }, 'Unhandled error');
   res.status(500).json({
     error: { code: 'INTERNAL_ERROR', message: 'Something went wrong' },
   });
