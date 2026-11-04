@@ -9,7 +9,13 @@ import { z } from 'zod';
 import { authenticate } from '../../middleware/authenticate.ts';
 import { validateBody, validateQuery } from '../../middleware/validate.ts';
 import { toBudgetDto } from './budgets.serializer.ts';
-import { createBudget, deleteBudget, listBudgets, updateBudget } from './budgets.service.ts';
+import {
+  copyBudgetsFromPreviousMonth,
+  createBudget,
+  deleteBudget,
+  listBudgets,
+  updateBudget,
+} from './budgets.service.ts';
 
 export const budgetsRouter = Router();
 
@@ -38,4 +44,9 @@ budgetsRouter.patch('/:id', validateBody(updateBudgetSchema), async (req, res) =
 budgetsRouter.delete('/:id', async (req, res) => {
   await deleteBudget(req.user!.sub, req.params.id as string);
   res.status(204).end();
+});
+
+budgetsRouter.post('/copy-previous', validateBody(monthQuerySchema), async (req, res) => {
+  const copied = await copyBudgetsFromPreviousMonth(req.user!.sub, req.body.month);
+  res.json({ copied });
 });

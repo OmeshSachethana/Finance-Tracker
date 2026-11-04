@@ -1,5 +1,6 @@
 import {
   getMonthRange,
+  previousMonthKey,
   type CreateBudgetInput,
   type UpdateBudgetInput,
 } from '@finance-tracker/shared';
@@ -60,4 +61,22 @@ export async function updateBudget(userId: string, id: string, input: UpdateBudg
 export async function deleteBudget(userId: string, id: string) {
   await getBudget(userId, id);
   await prisma.budget.delete({ where: { id } });
+}
+
+/** Copies last month's budgets into `month`, skipping categories that already have one. */
+export async function copyBudgetsFromPreviousMonth(userId: string, month: string) {
+  const previous = await prisma.budget.findMany({
+    where: { userId, month: previousMonthKey(month) },
+  });
+  const { count } = await prisma.budget.createMany({
+    data: previous.map((b) => ({
+      userId,
+      categoryId: b.categoryId,
+      month,
+      limit: b.limit,
+      alertThreshold: b.alertThreshold,
+    })),
+    skipDuplicates: true,
+  });
+  return count;
 }

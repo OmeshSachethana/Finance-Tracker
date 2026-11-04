@@ -74,4 +74,22 @@ describe('budgets', () => {
     const res = await request(app).get('/api/budgets?month=2026-11').set(headers);
     expect(res.body.items).toHaveLength(0);
   });
+
+  it("copies last month's budgets", async () => {
+    const { headers, groceriesId } = await userWithDefaults(app);
+    await request(app)
+      .post('/api/budgets')
+      .set(headers)
+      .send({ categoryId: groceriesId, month: '2026-10', limit: 40000 });
+    const res = await request(app)
+      .post('/api/budgets/copy-previous')
+      .set(headers)
+      .send({ month: '2026-11' });
+    expect(res.body.copied).toBe(1);
+    const again = await request(app)
+      .post('/api/budgets/copy-previous')
+      .set(headers)
+      .send({ month: '2026-11' });
+    expect(again.body.copied).toBe(0);
+  });
 });
