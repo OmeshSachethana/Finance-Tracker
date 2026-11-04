@@ -6,7 +6,7 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? 'github' : 'list',
   use: {
-    baseURL: 'http://localhost:5173',
+    baseURL: 'http://localhost:5180',
     trace: 'retain-on-failure',
     reducedMotion: 'reduce',
     // Use the locally installed Chrome so no browser download is needed.
@@ -14,7 +14,7 @@ export default defineConfig({
   },
   webServer: {
     command: 'npm run dev --prefix ..',
-    url: 'http://localhost:5173',
+    url: 'http://localhost:5180',
     reuseExistingServer: true,
     timeout: 60_000,
   },
