@@ -1,4 +1,5 @@
 import { CalendarClock, Pencil, PartyPopper, Plus, Trash2 } from 'lucide-react';
+import { useId } from 'react';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
@@ -24,11 +25,14 @@ interface GoalCardProps {
 export function GoalCard({ goal, onAddMoney, onEdit, onDelete }: GoalCardProps) {
   const { format } = useMoney();
   const days = goal.deadline ? daysUntil(goal.deadline) : null;
+  const titleId = useId();
 
   return (
-    <Card className="flex flex-col p-5">
+    <Card role="article" aria-labelledby={titleId} className="flex flex-col p-5">
       <div className="flex items-start justify-between gap-3">
-        <h3 className="font-medium">{goal.name}</h3>
+        <h3 id={titleId} className="font-medium">
+          {goal.name}
+        </h3>
         <div className="flex gap-1">
           <button
             type="button"
