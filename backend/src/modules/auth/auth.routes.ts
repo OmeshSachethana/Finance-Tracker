@@ -6,8 +6,8 @@ import { verifyAccessToken } from '../../lib/tokens.ts';
 import { validateBody } from '../../middleware/validate.ts';
 import { toUserDto } from './auth.serializer.ts';
 import { loginUser, registerUser } from './auth.service.ts';
-import { REFRESH_COOKIE, setRefreshCookie } from './cookies.ts';
-import { createSession, rotateSession } from './session.service.ts';
+import { clearRefreshCookie, REFRESH_COOKIE, setRefreshCookie } from './cookies.ts';
+import { createSession, revokeSession, rotateSession } from './session.service.ts';
 
 export const authRouter = Router();
 
@@ -35,4 +35,11 @@ authRouter.post('/refresh', async (req, res) => {
   });
   setRefreshCookie(res, session.refreshToken, session.refreshExpiresAt);
   res.json({ user: toUserDto(user), accessToken: session.accessToken });
+});
+
+authRouter.post('/logout', async (req, res) => {
+  const token: unknown = req.cookies?.[REFRESH_COOKIE];
+  if (typeof token === 'string') await revokeSession(token);
+  clearRefreshCookie(res);
+  res.status(204).end();
 });
