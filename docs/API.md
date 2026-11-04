@@ -88,3 +88,23 @@ List responses look like:
 | POST   | `/accounts`       | `name`, `type`, `currency`, `openingBalance`, `color`                   |
 | PATCH  | `/accounts/:id`   | Any create field, plus `archived`                                       |
 | DELETE | `/accounts/:id`   | `409` if it has transactions; archive it instead                        |
+
+## Budgets, goals and recurring rules
+
+| Method | Path                       | Notes                                                                                            |
+| ------ | -------------------------- | ------------------------------------------------------------------------------------------------ |
+| GET    | `/budgets?month=YYYY-MM`   | Budgets with `spent`, `remaining`, `percent` and `status` (`ok`, `warning`, `exceeded`)          |
+| POST   | `/budgets`                 | `categoryId` (expense only), `month`, `limit`, `alertThreshold?` (default 80)                    |
+| PATCH  | `/budgets/:id`             | `limit?`, `alertThreshold?`                                                                      |
+| DELETE | `/budgets/:id`             | `204`                                                                                            |
+| POST   | `/budgets/copy-previous`   | `{ month }`, returns `{ copied }`                                                                |
+| GET    | `/goals`                   | Goals with `percent` and `completed`                                                             |
+| POST   | `/goals`                   | `name`, `targetAmount`, `color`, `deadline?`                                                     |
+| PATCH  | `/goals/:id`               | Any create field                                                                                 |
+| DELETE | `/goals/:id`               | `204`                                                                                            |
+| POST   | `/goals/:id/contributions` | `{ amount }`; negative to withdraw, cannot go below zero                                         |
+| GET    | `/recurring`               | Rules ordered by next run date                                                                   |
+| POST   | `/recurring`               | `type`, `amount`, `description`, `categoryId`, `accountId`, `frequency`, `startDate`, `endDate?` |
+| PATCH  | `/recurring/:id`           | `amount?`, `description?`, `endDate?`, `active?`                                                 |
+| DELETE | `/recurring/:id`           | `204`                                                                                            |
+| POST   | `/recurring/run`           | Creates any due transactions now, returns `{ created }`                                          |
