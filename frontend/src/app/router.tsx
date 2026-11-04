@@ -1,9 +1,11 @@
 import { createBrowserRouter } from 'react-router';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { AuthLayout } from '@/components/layout/AuthLayout';
+import { RequireAdmin } from '@/features/auth/RequireAdmin';
 import { RedirectIfAuthenticated } from '@/features/auth/RedirectIfAuthenticated';
 import { RequireAuth } from '@/features/auth/RequireAuth';
 import { AccountsPage } from '@/pages/AccountsPage';
+import { AdminPage } from '@/pages/AdminPage';
 import { BudgetsPage } from '@/pages/BudgetsPage';
 import { CategoriesPage } from '@/pages/CategoriesPage';
 import { DashboardPage } from '@/pages/DashboardPage';
@@ -44,6 +46,10 @@ export const routes = [
           { path: 'categories', element: <CategoriesPage /> },
           { path: 'accounts', element: <AccountsPage /> },
           { path: 'settings', element: <SettingsPage /> },
+          {
+            element: <RequireAdmin />,
+            children: [{ path: 'admin', element: <AdminPage /> }],
+          },
           { path: '*', element: <NotFoundPage /> },
         ],
       },
