@@ -3,6 +3,7 @@ import { AppLayout } from '@/components/layout/AppLayout';
 import { AuthLayout } from '@/components/layout/AuthLayout';
 import { RedirectIfAuthenticated } from '@/features/auth/RedirectIfAuthenticated';
 import { RequireAuth } from '@/features/auth/RequireAuth';
+import { DashboardPage } from '@/pages/DashboardPage';
 import { LoginPage } from '@/pages/LoginPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { RegisterPage } from '@/pages/RegisterPage';
@@ -27,7 +28,7 @@ export const routes = [
       {
         element: <AppLayout />,
         children: [
-          { index: true, element: <h1 className="text-2xl font-semibold">Dashboard</h1> },
+          { index: true, element: <DashboardPage /> },
           { path: 'transactions', element: <TransactionsPage /> },
           { path: '*', element: <NotFoundPage /> },
         ],
