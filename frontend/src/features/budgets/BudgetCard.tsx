@@ -1,5 +1,6 @@
 import type { Category } from '@finance-tracker/shared';
 import { Pencil, Trash2 } from 'lucide-react';
+import { useId } from 'react';
 import { Card } from '@/components/ui/Card';
 import { ProgressBar } from '@/components/ui/ProgressBar';
 import { useMoney } from '@/hooks/useMoney';
@@ -17,8 +18,9 @@ interface BudgetCardProps {
 export function BudgetCard({ budget, category, onEdit, onDelete }: BudgetCardProps) {
   const { format } = useMoney();
   const name = category?.name ?? 'Unknown category';
+  const titleId = useId();
   return (
-    <Card className="p-5">
+    <Card role="article" aria-labelledby={titleId} className="p-5">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-2">
           <span
@@ -26,7 +28,9 @@ export function BudgetCard({ budget, category, onEdit, onDelete }: BudgetCardPro
             className="size-3 rounded-full"
             style={{ backgroundColor: category?.color }}
           />
-          <h3 className="font-medium">{name}</h3>
+          <h3 id={titleId} className="font-medium">
+            {name}
+          </h3>
         </div>
         <div className="flex gap-1">
           <button
