@@ -105,3 +105,12 @@ Run these from the repository root.
 - **Validation** rules live in `shared/` and run both in the browser forms and on the API, so the two never disagree.
 - **Recurring rules** are processed hourly. A monthly rule that starts on the 31st falls on the last day of shorter months and returns to the 31st afterwards.
 - **Security**: Helmet headers, CORS limited to the app origin, request size limits, login rate limiting, password hashing with bcrypt, and CSV export protected against spreadsheet formula injection.
+
+## Testing
+
+- **Shared**: unit tests for schemas, money, dates, budgets and recurrence rules.
+- **Backend**: integration tests that call the real API with Supertest against a separate `finance_tracker_test` database, which is migrated automatically before the tests run.
+- **Frontend**: component and hook tests with Testing Library.
+- **End-to-end**: Playwright drives a real browser through sign-in, every page and the main create, edit and delete flows, including dark mode and a phone-sized screen.
+
+CI runs formatting, lint, type checks, all tests, the production build, the end-to-end suite and both Docker image builds on every push.
