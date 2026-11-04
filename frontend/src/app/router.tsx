@@ -8,6 +8,7 @@ import { DashboardPage } from '@/pages/DashboardPage';
 import { GoalsPage } from '@/pages/GoalsPage';
 import { LoginPage } from '@/pages/LoginPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
+import { RecurringPage } from '@/pages/RecurringPage';
 import { RegisterPage } from '@/pages/RegisterPage';
 import { TransactionsPage } from '@/pages/TransactionsPage';
 
@@ -34,6 +35,7 @@ export const routes = [
           { path: 'transactions', element: <TransactionsPage /> },
           { path: 'budgets', element: <BudgetsPage /> },
           { path: 'goals', element: <GoalsPage /> },
+          { path: 'recurring', element: <RecurringPage /> },
           { path: '*', element: <NotFoundPage /> },
         ],
       },
