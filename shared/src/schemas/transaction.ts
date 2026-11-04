@@ -20,3 +20,13 @@ export type CreateTransactionInput = z.input<typeof createTransactionSchema>;
 
 export const updateTransactionSchema = createTransactionSchema.partial();
 export type UpdateTransactionInput = z.input<typeof updateTransactionSchema>;
+
+export const transactionFiltersSchema = z.object({
+  type: transactionTypeSchema.optional(),
+  categoryId: idSchema.optional(),
+  accountId: idSchema.optional(),
+  from: isoDateSchema.optional(),
+  to: isoDateSchema.optional(),
+  search: z.string().trim().max(100).optional(),
+});
+export type TransactionFilters = z.infer<typeof transactionFiltersSchema>;
