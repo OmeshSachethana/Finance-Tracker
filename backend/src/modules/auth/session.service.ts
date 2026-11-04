@@ -24,7 +24,7 @@ export async function createSession(user: Pick<User, 'id' | 'role'>): Promise<Se
 }
 
 /** Exchanges a valid refresh token for a new session, revoking the old token. */
-export async function rotateSession(refreshToken: string): Promise<Session> {
+export async function rotateSession(refreshToken: string): Promise<Session & { user: User }> {
   const stored = await prisma.refreshToken.findUnique({
     where: { tokenHash: hashRefreshToken(refreshToken) },
     include: { user: true },
@@ -35,7 +35,7 @@ export async function rotateSession(refreshToken: string): Promise<Session> {
   }
 
   await prisma.refreshToken.update({ where: { id: stored.id }, data: { revokedAt: new Date() } });
-  return createSession(stored.user);
+  return { ...(await createSession(stored.user)), user: stored.user };
 }
 
 /** Revokes a refresh token so it can no longer be used. */

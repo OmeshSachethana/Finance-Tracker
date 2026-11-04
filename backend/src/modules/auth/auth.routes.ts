@@ -2,7 +2,6 @@ import { loginSchema, registerSchema } from '@finance-tracker/shared';
 import { Router } from 'express';
 import { unauthorized } from '../../lib/errors.ts';
 import { prisma } from '../../lib/prisma.ts';
-import { verifyAccessToken } from '../../lib/tokens.ts';
 import { authenticate } from '../../middleware/authenticate.ts';
 import { validateBody } from '../../middleware/validate.ts';
 import { toUserDto } from './auth.serializer.ts';
@@ -30,10 +29,7 @@ authRouter.post('/refresh', async (req, res) => {
   const token: unknown = req.cookies?.[REFRESH_COOKIE];
   if (typeof token !== 'string') throw unauthorized('No session');
 
-  const session = await rotateSession(token);
-  const user = await prisma.user.findUniqueOrThrow({
-    where: { id: (await verifyAccessToken(session.accessToken)).sub },
-  });
+  const { user, ...session } = await rotateSession(token);
   setRefreshCookie(res, session.refreshToken, session.refreshExpiresAt);
   res.json({ user: toUserDto(user), accessToken: session.accessToken });
 });
