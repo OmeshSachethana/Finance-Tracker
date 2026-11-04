@@ -18,3 +18,9 @@ export function calculateTotals(transactions: Amounted[]): Totals {
   }
   return { income, expense, balance: income - expense };
 }
+
+/** Percentage of income kept after expenses, rounded to one decimal. */
+export function calculateSavingsRate({ income, expense }: Totals): number {
+  if (income <= 0) return 0;
+  return Math.round(((income - expense) / income) * 1000) / 10;
+}
