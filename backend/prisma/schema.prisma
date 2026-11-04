@@ -30,8 +30,9 @@ model User {
 
   transactions Transaction[]
 
-  budgets Budget[]
-  goals   Goal[]
+  budgets        Budget[]
+  goals          Goal[]
+  recurringRules RecurringRule[]
 
   @@map("users")
 }
@@ -149,4 +150,32 @@ model Goal {
 
   @@index([userId])
   @@map("goals")
+}
+
+enum Frequency {
+  DAILY
+  WEEKLY
+  MONTHLY
+  YEARLY
+}
+
+model RecurringRule {
+  id          String          @id @default(uuid())
+  userId      String
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accountId   String
+  categoryId  String
+  type        TransactionType
+  amount      Int
+  description String
+  frequency   Frequency
+  startDate   DateTime        @db.Date
+  endDate     DateTime?       @db.Date
+  nextRunDate DateTime        @db.Date
+  active      Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([active, nextRunDate])
+  @@map("recurring_rules")
 }
