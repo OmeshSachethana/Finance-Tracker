@@ -8,6 +8,7 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:5173',
     trace: 'retain-on-failure',
+    reducedMotion: 'reduce',
     // Use the locally installed Chrome so no browser download is needed.
     channel: process.env.CI ? undefined : 'chrome',
   },
