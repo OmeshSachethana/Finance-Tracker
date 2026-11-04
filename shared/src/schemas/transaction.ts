@@ -30,3 +30,9 @@ export const transactionFiltersSchema = z.object({
   search: z.string().trim().max(100).optional(),
 });
 export type TransactionFilters = z.infer<typeof transactionFiltersSchema>;
+
+export const transactionSortSchema = z.object({
+  sortBy: z.enum(['date', 'amount', 'description']).default('date'),
+  order: z.enum(['asc', 'desc']).default('desc'),
+});
+export type TransactionSort = z.infer<typeof transactionSortSchema>;
