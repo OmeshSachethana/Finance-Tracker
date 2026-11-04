@@ -55,7 +55,10 @@ export function LoginPage() {
         </form>
         <p className="text-center text-sm text-slate-500">
           New here?{' '}
-          <Link to="/register" className="font-medium text-brand-600 hover:underline">
+          <Link
+            to="/register"
+            className="font-medium text-brand-600 hover:underline dark:text-brand-400"
+          >
             Create an account
           </Link>
         </p>

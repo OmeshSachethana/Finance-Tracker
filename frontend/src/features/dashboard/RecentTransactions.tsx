@@ -17,7 +17,10 @@ export function RecentTransactions() {
     <Card>
       <CardHeader>
         <CardTitle>Recent transactions</CardTitle>
-        <Link to="/transactions" className="text-sm font-medium text-brand-600 hover:underline">
+        <Link
+          to="/transactions"
+          className="text-sm font-medium text-brand-600 hover:underline dark:text-brand-400"
+        >
           View all
         </Link>
       </CardHeader>

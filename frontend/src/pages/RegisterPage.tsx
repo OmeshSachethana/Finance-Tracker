@@ -60,7 +60,10 @@ export function RegisterPage() {
         </form>
         <p className="text-center text-sm text-slate-500">
           Already have an account?{' '}
-          <Link to="/login" className="font-medium text-brand-600 hover:underline">
+          <Link
+            to="/login"
+            className="font-medium text-brand-600 hover:underline dark:text-brand-400"
+          >
             Sign in
           </Link>
         </p>
