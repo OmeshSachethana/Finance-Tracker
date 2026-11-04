@@ -11,3 +11,5 @@ export * from './schemas/transaction';
 export * from './schemas/recurring';
 export * from './schemas/budget';
 export * from './schemas/goal';
+export * from './utils/calculations';
+export * from './utils/budget';
