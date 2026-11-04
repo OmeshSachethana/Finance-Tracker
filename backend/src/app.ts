@@ -7,6 +7,8 @@ import { healthRouter } from './routes/health.ts';
 export function createApp() {
   const app = express();
 
+  app.disable('x-powered-by');
+
   app.use(helmet());
   app.use(cors({ origin: env.CORS_ORIGIN.split(','), credentials: true }));
   app.use(express.json({ limit: '100kb' }));
